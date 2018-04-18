@@ -10,6 +10,8 @@ class Note extends React.Component {
     }
   }
   render() {
+    const { note } = this.props
+
     return (
       <div
         className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
@@ -19,8 +21,10 @@ class Note extends React.Component {
         onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
-          {this.state.isSelected && <h6 className="card-title">Title</h6>}
-          <p className="card-text">Content</p>
+          {this.state.isSelected && (
+            <h6 className="card-title">{note.title}</h6>
+          )}
+          <p className="card-text">{note.contents[0].todo}</p>
         </div>
       </div>
     )
@@ -34,6 +38,9 @@ class Note extends React.Component {
   }
 
   select = () => {
+    const canSelect = this.props.onSelect(this.props.note.id)
+    if (!canSelect) return false
+
     this.setState(state => ({
       ...state,
       isSelected: true
@@ -41,6 +48,9 @@ class Note extends React.Component {
   }
 
   deselect = () => {
+    const canDeselect = this.props.onSelect(undefined)
+    if (!canDeselect) return false
+
     this.setState(state => ({
       ...state,
       isSelected: false

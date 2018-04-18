@@ -1,14 +1,13 @@
 .note {
-  @include card();
-  background: $white;
-  &.fullscreen {
-    @include card($depth: 2, $hover: false);
-    position: fixed;
-    left: 50%;
-    width: 560px;
-    max-width: 100%;
-    z-index: 1000;
-    transform: translateX(-50%);
+    @include card();
+    background: $white;
     transition: $transition;
-  }
+    &.fullscreen {
+        @include card($depth: 2, $hover: false);
+        position: fixed;
+        width: 560px;
+        max-width: 100%;
+        z-index: 1000;
+        transform: translateX(100% - 50%);
+    }
 }
