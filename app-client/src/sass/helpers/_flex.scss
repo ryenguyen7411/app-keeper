@@ -1,0 +1,92 @@
+@each $bp in $breakpoint-name {
+  @include responsive($bp) {
+    $infix: infix($bp);
+    .flex#{$infix}-row {
+      flex-direction: row !important;
+    }
+    .flex#{$infix}-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+    .flex#{$infix}-column {
+      flex-direction: column !important;
+    }
+    .flex#{$infix}-column-reverse {
+      flex-direction: column-reverse !important;
+    }
+    .flex#{$infix}-wrap {
+      flex-wrap: wrap;
+    }
+    .flex#{$infix}-wrap-reverse {
+      flex-wrap: wrap-reverse;
+    }
+    .flex#{$infix}-nowrap {
+      flex-wrap: nowrap;
+    }
+    .j#{$infix}-start {
+      justify-content: flex-start !important;
+    }
+    .j#{$infix}-end {
+      justify-content: flex-end !important;
+    }
+    .j#{$infix}-center {
+      justify-content: center !important;
+    }
+    .j#{$infix}-between {
+      justify-content: space-between !important;
+    }
+    .j#{$infix}-around {
+      justify-content: space-around !important;
+    }
+    .a#{$infix}-start {
+      align-items: flex-start !important;
+    }
+    .a#{$infix}-end {
+      align-items: flex-end !important;
+    }
+    .a#{$infix}-center {
+      align-items: center !important;
+    }
+    .a#{$infix}-baseline {
+      align-items: baseline !important;
+    }
+    .a#{$infix}-stretch {
+      align-items: stretch !important;
+    }
+    .ac#{$infix}-start {
+      align-content: flex-start !important;
+    }
+    .ac#{$infix}-end {
+      align-content: flex-end !important;
+    }
+    .ac#{$infix}-center {
+      align-content: center !important;
+    }
+    .ac#{$infix}-between {
+      align-content: space-between !important;
+    }
+    .ac#{$infix}-around {
+      align-content: space-around !important;
+    }
+    .ac#{$infix}-stretch {
+      align-content: stretch !important;
+    }
+    .as#{$infix}-auto {
+      align-self: auto !important;
+    }
+    .as#{$infix}-start {
+      align-self: flex-start !important;
+    }
+    .as#{$infix}-end {
+      align-self: flex-end !important;
+    }
+    .as#{$infix}-center {
+      align-self: center !important;
+    }
+    .as#{$infix}-baseline {
+      align-self: baseline !important;
+    }
+    .as#{$infix}-stretch {
+      align-self: stretch !important;
+    }
+  }
+}

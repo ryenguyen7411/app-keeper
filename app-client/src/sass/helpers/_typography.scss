@@ -1,0 +1,137 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  margin: 0.5rem 0;
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+h1,
+.h1 {
+  font-size: 4rem;
+}
+
+h2,
+.h2 {
+  font-size: 3.2rem;
+}
+
+h3,
+.h3 {
+  font-size: 2.8rem;
+}
+
+h4,
+.h4 {
+  font-size: 2.4rem;
+}
+
+h5,
+.h5 {
+  font-size: 2rem;
+}
+
+h6,
+.h6 {
+  font-size: 1.6rem;
+}
+
+.display-1,
+.display-2,
+.display-3,
+.display-4 {
+  margin: 0.5rem 0;
+  line-height: 1.2;
+  font-weight: normal;
+}
+
+.display-1 {
+  font-size: 8rem;
+}
+
+.display-2 {
+  font-size: 7.2rem;
+}
+
+.display-3 {
+  font-size: 6rem;
+}
+
+.display-4 {
+  font-size: 5rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+.bigger {
+  font-size: 1.4em;
+}
+.smaller {
+  font-size: 0.8em;
+}
+
+@each $bp in $breakpoint-name {
+  @include responsive($bp) {
+    $infix: infix($bp);
+    .text#{$infix}-center {
+      text-align: center !important;
+    }
+    .text#{$infix}-left {
+      text-align: left !important;
+    }
+    .text#{$infix}-right {
+      text-align: right !important;
+    }
+  }
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+.text-italic {
+  font-style: italic !important;
+}
+
+.text-bold {
+  font-weight: bold !important;
+}
+
+.text-normal {
+  font-weight: normal !important;
+}
+
+.text-light {
+  font-weight: lighter !important;
+}
+
+.text-hide {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}

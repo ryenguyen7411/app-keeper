@@ -1,0 +1,40 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+%grid-default {
+  width: 100%;
+}
+
+@each $bp in $breakpoint-name {
+  $infix: infix($bp);
+  .col#{$infix}-adapt {
+    @extend %grid-default;
+  }
+  .col#{$infix}-auto {
+    @extend %grid-default;
+  }
+  @for $i from 1 through $grid-columns {
+    .col#{$infix}-#{$i} {
+      @extend %grid-default;
+    }
+  }
+}
+
+@each $bp in $breakpoint-name {
+  @include responsive($bp) {
+    $infix: infix($bp);
+    .col#{$infix}-adapt {
+      flex: 1;
+    }
+    .col#{$infix}-auto {
+      width: auto;
+    }
+    @for $i from 1 through $grid-columns {
+      .col#{$infix}-#{$i} {
+        flex-basis: calc(100% / #{$grid-columns} * #{$i});
+      }
+    }
+  }
+}

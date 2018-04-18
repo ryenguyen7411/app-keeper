@@ -1,0 +1,47 @@
+// Media breakpoint info
+$breakpoint: 0 576 768 992 1200 1600;
+$breakpoint-name: xs sm md lg xl xxl;
+// Grid system
+$grid-columns: 12;
+// Font stack
+$font-stack: 'Roboto', sans-serif;
+// Colors
+$primary: #007bff !default;
+$secondary: #868e96 !default;
+$success: #28a745 !default;
+$info: #17a2b8 !default;
+$warning: #ffc107 !default;
+$danger: #dc3545 !default;
+$light: #f8f9fa !default;
+$dark: #343a40 !default;
+$theme-colors: () !default;
+$theme-colors: map-merge(
+
+  (
+    'primary': $primary,
+    'secondary': $secondary,
+    'success': $success,
+    'info': $info,
+    'warning': $warning,
+    'danger': $danger,
+    'light': $light,
+    'dark': $dark
+  ),
+  $theme-colors
+);
+// Effects
+$transition: all 0.2s !default;
+$transition-long: all 0.5s !default;
+// Responsive container
+$container-sm: 560px;
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1152px;
+$container-xxl: 1440px;
+
+// The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.
+$yiq-contrasted-threshold: 150 !default;
+
+// Customize the light and dark text colors for use in our YIQ color contrast function.
+$yiq-text-dark: $dark !default;
+$yiq-text-light: $light !default;

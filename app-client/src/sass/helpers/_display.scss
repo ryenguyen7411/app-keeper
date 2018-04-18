@@ -1,0 +1,125 @@
+%container-default {
+  margin: 0 auto;
+  padding: 0 8px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.container {
+  @extend %container-default;
+  transition: $transition;
+  @include responsive(sm, sm) {
+    max-width: $container-sm;
+  }
+  @include responsive(md, md) {
+    max-width: $container-md;
+  }
+  @include responsive(lg, lg) {
+    max-width: $container-lg;
+  }
+  @include responsive(xl, xl) {
+    max-width: $container-xl;
+  }
+  @include responsive(xxl, xxl) {
+    max-width: $container-xxl;
+  }
+  &-adapt {
+    @extend %container-default;
+  }
+}
+
+@each $bp in $breakpoint-name {
+  @include responsive($bp) {
+    $infix: infix($bp);
+    .d#{$infix}-none {
+      display: none !important;
+    }
+    .d#{$infix}-block {
+      display: block !important;
+    }
+    .d#{$infix}-flex {
+      display: flex !important;
+    }
+    .p#{$infix}-static {
+      position: static !important;
+    }
+    .p#{$infix}-relative {
+      position: relative !important;
+    }
+    .p#{$infix}-absolute {
+      position: absolute !important;
+    }
+    .p#{$infix}-fixed {
+      position: fixed !important;
+    }
+    .p#{$infix}-sticky {
+      position: sticky !important;
+    }
+    .float#{$infix}-left {
+      float: left !important;
+    }
+    .float#{$infix}-right {
+      float: right !important;
+    }
+    .float#{$infix}-none {
+      float: none !important;
+    }
+  }
+}
+
+@each $bp in $breakpoint-name {
+  @include responsive($bp) {
+    $infix: infix($bp);
+    @each $prop, $acr in (margin: m, padding: p) {
+      @each $size,
+        $length in (1: 0.8rem, 2: 1.6rem, 3: 3.2rem, 4: 4.8rem, 5: 6.4rem, 6: 8rem) {
+        .#{$acr}#{$infix}-#{$size} {
+          #{$prop}: $length !important;
+        }
+        .#{$acr}t#{$infix}-#{$size},
+        .#{$acr}y#{$infix}-#{$size} {
+          #{$prop}-top: $length !important;
+        }
+        .#{$acr}r#{$infix}-#{$size},
+        .#{$acr}x#{$infix}-#{$size} {
+          #{$prop}-right: $length !important;
+        }
+        .#{$acr}b#{$infix}-#{$size},
+        .#{$acr}y#{$infix}-#{$size} {
+          #{$prop}-bottom: $length !important;
+        }
+        .#{$acr}l#{$infix}-#{$size},
+        .#{$acr}x#{$infix}-#{$size} {
+          #{$prop}-left: $length !important;
+        }
+      }
+    }
+    .m#{$infix}-auto {
+      margin: auto !important;
+    }
+    .mt#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-top: auto !important;
+    }
+    .mr#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-right: auto !important;
+    }
+    .mb#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-bottom: auto !important;
+    }
+    .ml#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-left: auto !important;
+    }
+  }
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+.hidden {
+  visibility: hidden !important;
+}

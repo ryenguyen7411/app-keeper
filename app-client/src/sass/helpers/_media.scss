@@ -1,0 +1,24 @@
+.img-adapt {
+  width: 100%;
+  height: auto;
+}
+
+.rounded {
+  border-radius: 0.8rem;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+@each $color, $value in $theme-colors {
+  .border-#{$color} {
+    border-color: $value !important;
+  }
+  .color-#{$color} {
+    color: $value !important;
+  }
+  .bg-#{$color} {
+    background-color: $value !important;
+  }
+}

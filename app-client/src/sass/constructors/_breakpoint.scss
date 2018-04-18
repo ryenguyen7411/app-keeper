@@ -1,0 +1,39 @@
+@mixin responsive($bp1, $bp2: '') {
+    $bp: join(-1, $breakpoint);
+    $bp-name: join('', $breakpoint-name);
+    $bp1-i: 0;
+    $bp2-i: 0;
+    @each $name in $bp-name {
+        @if $name==$bp1 {
+            $bp1-i: index($bp-name, $name);
+        }
+        @if $name==$bp2 {
+            $bp2-i: index($bp-name, $name);
+        }
+    }
+    @if $bp1-i==0 or $bp2-i==0 or ($bp1-i==1 and $bp2-i==1) or ($bp2-i!=1 and $bp1-i > $bp2-i) {
+        @warn "Invalid breakpoint.";
+    }
+    @else if $bp1-i==1 or $bp2-i==1 and $bp1==xs or $bp2==xxl {
+        @content;
+    }
+    @else if $bp1==xs and $bp2==xs or $bp1-i==1 and $bp2!=xxl {
+        @media (max-width: (nth($bp, $bp2-i + 1) - 1) * 1px) {
+            @content;
+        }
+    }
+    @else if $bp1==xxl and $bp2==xxl or $bp1!=xs and $bp2-i==1 {
+        @media (min-width: nth($bp, $bp1-i) * 1px) {
+            @content;
+        }
+    }
+    @else {
+        @media (min-width: nth($bp, $bp1-i) * 1px) and (max-width: (nth($bp, $bp2-i + 1) - 1) * 1px) {
+            @content;
+        }
+    }
+}
+
+@function infix($bp) {
+    @return if($bp !='xs', '-#{$bp}', '');
+}
