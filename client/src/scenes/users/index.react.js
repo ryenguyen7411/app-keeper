@@ -21,7 +21,8 @@ const Notes = [
         todo: 'Hello world 2',
         isChecked: false
       }
-    ]
+    ],
+    mode: 'check'
   },
   {
     id: 2,
@@ -33,9 +34,10 @@ const Notes = [
       },
       {
         todo: 'Hello world 2',
-        isChecked: false
+        isChecked: true
       }
-    ]
+    ],
+    mode: 'check'
   },
   {
     id: 3,
@@ -49,7 +51,8 @@ const Notes = [
         todo: 'Hello world 2',
         isChecked: false
       }
-    ]
+    ],
+    mode: 'text'
   }
 ]
 
@@ -73,7 +76,8 @@ class Home extends React.Component {
             <HomeNote key={index} onSelect={this.selectNote} note={note} />
           ))}
         </div>
-      </div>
+      </div>,
+      this.state.selectedNote && <div key="overlay" className="overlay" />
     ]
   }
 
