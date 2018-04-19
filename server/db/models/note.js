@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      mode: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        defaultValue: 'text'
+      },
       color_id: { allowNull: false, type: DataTypes.INTEGER },
       status_id: { allowNull: false, type: DataTypes.INTEGER },
       remind_at: DataTypes.DATE,
@@ -26,7 +31,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   Note.associate = function(models) {
-    // associations can be defined here
+    Note.belongTo(models.Color, { foreignKey: 'color_id', as: 'color' })
+    Note.belongTo(models.Status, { foreignKey: 'status_id', as: 'status' })
+    Note.hasMany(models.Image, { foreignKey: 'note_id', as: 'image' })
   }
   return Note
 }

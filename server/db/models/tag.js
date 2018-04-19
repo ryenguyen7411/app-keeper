@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   Tag.associate = function(models) {
-    // associations can be defined here
+    Tag.hasMany(models.NoteTag, { foreignKey: 'tag_id', as: 'tag' })
   }
   return Tag
 }

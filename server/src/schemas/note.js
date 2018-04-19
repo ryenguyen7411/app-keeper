@@ -1,4 +1,5 @@
 /** Import external lib */
+import _ from 'lodash'
 
 /** Import internal lib */
 import type from '../config/type'
@@ -8,12 +9,33 @@ import apiValidation from '../services/api'
 /** Import from db and schema */
 import models from '../../db/models'
 
-const { Note, Sequelize } = models
+const { Note, Color, Tag, Status, Sequelize } = models
 
 /** Definition of model type */
+const colorType = type.object({
+  name: 'Color',
+  fields: {
+    id: { type: type.ID },
+    hex: { type: type.string },
+    deleted_at: { type: type.string },
+    created_at: { type: type.string },
+    updated_at: { type: type.string }
+  }
+})
+
+const statusType = type.object({
+  name: 'Status',
+  fields: {
+    id: { type: type.ID },
+    name: { type: type.string },
+    deleted_at: { type: type.string },
+    created_at: { type: type.string },
+    updated_at: { type: type.string }
+  }
+})
+
 const noteInputType = type.input({
   name: 'NoteInput',
-  description: '',
   fields: {
     title: { type: type.string },
     contents: { type: type.string },
@@ -33,7 +55,9 @@ export const noteType = type.object({
     sort_value: { type: type.int },
     pinned: { type: type.boolean },
     color_id: { type: type.int },
+    color: { type: colorType },
     status_id: { type: type.int },
+    status: { type: statusType },
     remind_at: { type: type.string },
     deleted_at: { type: type.string },
     created_at: { type: type.string },
@@ -47,14 +71,38 @@ const resolver = {
   note: async (obj, args, context, selectionSet) => {
     return await Note.findOne({
       where: { id: args.id },
-      attributes: selectionSet.root
+      attributes: selectionSet.root,
+      include: [
+        {
+          model: Color,
+          as: 'color',
+          attributes: _.get(selectionSet, ['child', 'color', 'root'], [])
+        },
+        {
+          model: Status,
+          as: 'status',
+          attributes: _.get(selectionSet, ['child', 'status', 'root'], [])
+        }
+      ]
     })
   },
   notes: async (obj, args, context, selectionSet) => {
     return await Note.findAll({
       limit: args.limit,
       offset: args.offset,
-      attributes: selectionSet.root
+      attributes: selectionSet.root,
+      include: [
+        {
+          model: Color,
+          as: 'color',
+          attributes: _.get(selectionSet, ['child', 'color', 'root'], [])
+        },
+        {
+          model: Status,
+          as: 'status',
+          attributes: _.get(selectionSet, ['child', 'status', 'root'], [])
+        }
+      ]
     })
   },
 

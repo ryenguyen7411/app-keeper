@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   Image.associate = function(models) {
-    // associations can be defined here
+    Image.belongTo(models.Note, { foreignKey: 'note_id', onDelete: 'CASCADE' })
   }
   return Image
 }

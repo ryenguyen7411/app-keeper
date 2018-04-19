@@ -21,6 +21,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
+      mode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       color_id: {
         allowNull: false,
         type: Sequelize.STRING

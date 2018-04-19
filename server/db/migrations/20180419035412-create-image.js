@@ -10,7 +10,13 @@ module.exports = {
       },
       note_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Notes',
+          key: 'id',
+          as: 'note_id'
+        }
       },
       url: {
         type: Sequelize.STRING
