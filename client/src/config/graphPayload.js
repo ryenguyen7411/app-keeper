@@ -44,6 +44,21 @@ export const getNoteTags = () => `
   }
 }
 `
+export const createNote = note => {
+  let str = ''
+  for (const key in note) {
+    if (note.hasOwnProperty(key)) {
+      const element = note[key]
+      str += `${key}: ${element},`
+    }
+  }
+
+  return `
+    mutation {
+      createNote(note: {${str}})
+    }
+  `
+}
 export const updateNote = (noteId, updatedAttributes) => {
   let str = ''
   for (const key in updatedAttributes) {

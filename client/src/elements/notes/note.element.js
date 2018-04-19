@@ -58,7 +58,11 @@ class Note extends React.Component {
         onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
-          <h5>{note.status_id === 2 ? 'ARCHIVED' : ''}</h5>
+          <h5>
+            {note.status_id === 2
+              ? 'ARCHIVED'
+              : note.status_id === 3 ? 'DELETED' : ''}
+          </h5>
           <h6 className="card-title">{note.title}</h6>
           <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
 
@@ -107,8 +111,12 @@ class Note extends React.Component {
                   Xóa ghi chú
                 </div>
                 <div className="dropdown-item">Thay đổi nhãn</div>
-                <div className="dropdown-item">Tạo bản sao</div>
-                <div className="dropdown-item">Ẩn hộp kiểm</div>
+                <div className="dropdown-item" onClick={this.clone}>
+                  Tạo bản sao
+                </div>
+                <div className="dropdown-item" onClick={this.changeMode}>
+                  Ẩn hộp kiểm
+                </div>
               </div>
             </span>
 
@@ -123,7 +131,7 @@ class Note extends React.Component {
               icon={pin}
               size={16}
               className="toolbox-icon icon-pinned"
-              onClick={this.pin}
+              onClick={this.togglePinned}
             />
           </div>
         </div>
@@ -177,11 +185,13 @@ class Note extends React.Component {
   delete = e => {
     e.stopPropagation()
 
-    console.log('DELETED')
+    this.props.onUpdate(this.props.note.id, { status_id: 3 })
   }
 
-  pin = e => {
+  togglePinned = e => {
     e.stopPropagation()
+
+    this.props.onUpdate(this.props.note.id, { pinned: !this.props.note.pinned })
   }
 
   // color
@@ -189,10 +199,19 @@ class Note extends React.Component {
 
   clone = e => {
     e.stopPropagation()
+
+    const note = JSON.parse(JSON.stringify(this.props.note))
+    delete note.id
+
+    this.props.onCreateClone(note)
   }
 
   changeMode = e => {
     e.stopPropagation()
+
+    this.props.onUpdate(this.props.note.id, {
+      mode: this.props.note.mode !== 'check' ? '"check"' : '"text"'
+    })
   }
 
   // remind

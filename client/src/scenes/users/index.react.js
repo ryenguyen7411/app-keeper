@@ -3,16 +3,30 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { noteGraph } from 'api/note.api'
-import { getNote, getNotes, getNoteTags, updateNote } from 'config/graphPayload'
+import {
+  getNote,
+  getNotes,
+  getNoteTags,
+  createNote,
+  updateNote
+} from 'config/graphPayload'
 
 import Note from 'elements/notes/note.element'
 
-const HomeNote = ({ onSelect, onUpdate, note, tags }) => (
-  <div className="col-sm-6 col-md-4 col-lg-3">
-    <Note onSelect={onSelect} onUpdate={onUpdate} note={note} tags={tags} />
-  </div>
-)
-
+const HomeNote = ({ onSelect, onUpdate, onCreateClone, note, tags }) => {
+  // console.log('HOME note', onCreateClone, note)
+  return (
+    <div className="col-sm-6 col-md-4 col-lg-3">
+      <Note
+        onSelect={onSelect}
+        onUpdate={onUpdate}
+        onCreateClone={onCreateClone}
+        note={note}
+        tags={tags}
+      />
+    </div>
+  )
+}
 class Home extends React.Component {
   constructor(props) {
     super(props)
@@ -26,14 +40,13 @@ class Home extends React.Component {
     this.props.noteGraph(getNoteTags())
   }
   render() {
+    const pinnedNote = this.props.notes.filter(note => note.pinned === true)
+    const unPinnedNote = this.props.notes.filter(note => note.pinned !== true)
     return [
       <div key="pinned">
         <h6>Được ghim</h6>
-      </div>,
-      <div key="unpinned">
-        <h6>Khác</h6>
         <div className="row gutters-4">
-          {this.props.notes.map((note, index) => {
+          {pinnedNote.map((note, index) => {
             const tags = this.props.noteTags.filter(
               tag => tag.note_id === note.id
             )
@@ -42,6 +55,26 @@ class Home extends React.Component {
                 key={index}
                 onSelect={this.selectNote}
                 onUpdate={this.updateNote}
+                note={note}
+                tags={tags}
+              />
+            )
+          })}
+        </div>
+      </div>,
+      <div key="unpinned">
+        <h6>Khác</h6>
+        <div className="row gutters-4">
+          {unPinnedNote.map((note, index) => {
+            const tags = this.props.noteTags.filter(
+              tag => tag.note_id === note.id
+            )
+            return (
+              <HomeNote
+                key={index}
+                onSelect={this.selectNote}
+                onUpdate={this.updateNote}
+                onCreateClone={this.cloneNote}
                 note={note}
                 tags={tags}
               />
@@ -73,6 +106,10 @@ class Home extends React.Component {
       this.props.noteGraph,
       getNoteQuery
     )
+  }
+
+  cloneNote = note => {
+    this.props.noteGraph(createNote(note))
   }
 }
 
