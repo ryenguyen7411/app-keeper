@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   Note.associate = function(models) {
-    Note.belongTo(models.Color, { foreignKey: 'color_id', as: 'color' })
-    Note.belongTo(models.Status, { foreignKey: 'status_id', as: 'status' })
+    Note.belongsTo(models.Color, { foreignKey: 'color_id', as: 'color' })
+    Note.belongsTo(models.Status, { foreignKey: 'status_id', as: 'status' })
     Note.hasMany(models.Image, { foreignKey: 'note_id', as: 'image' })
   }
   return Note

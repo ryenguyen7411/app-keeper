@@ -12,7 +12,9 @@ import { pin } from 'react-icons-kit/iconic'
 import { handPointerO } from 'react-icons-kit/fa'
 
 function Todo({ todoList, noteId, mode }) {
-  return todoList
+  const todos = JSON.parse(todoList)
+
+  return todos
     .slice(0, 8)
     .map((todo, index) => (
       <TodoItem
@@ -45,7 +47,7 @@ class Note extends React.Component {
     }
   }
   render() {
-    const { note } = this.props
+    const { note, tags } = this.props
 
     return (
       <div
@@ -60,7 +62,7 @@ class Note extends React.Component {
           <h6 className="card-title">{note.title}</h6>
           <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
           <div className="tags">
-            {note.tags.map(tag => (
+            {tags.map(tag => (
               <span
                 key={`tag-${note.id}-${tag.id}`}
                 className="badge mr-1"

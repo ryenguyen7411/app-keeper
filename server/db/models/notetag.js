@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   NoteTag.associate = function(models) {
-    NoteTag.belongTo(models.Note, { foreignKey: 'note_id', as: 'note' })
+    NoteTag.belongsTo(models.Note, { foreignKey: 'note_id', as: 'note' })
+    NoteTag.belongsTo(models.Tag, { goreignKey: 'tag_id', as: 'tag' })
   }
   return NoteTag
 }

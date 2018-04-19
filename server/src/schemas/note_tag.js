@@ -1,4 +1,5 @@
 /** Import external lib */
+import _ from 'lodash'
 
 /** Import internal lib */
 import type from '../config/type'
@@ -7,8 +8,9 @@ import apiValidation from '../services/api'
 
 /** Import from db and schema */
 import models from '../../db/models'
+import { tagType } from './tag'
 
-const { NoteTag, Sequelize } = models
+const { NoteTag, Tag, Sequelize } = models
 
 /** Definition of model type */
 export const noteTagType = type.object({
@@ -17,6 +19,7 @@ export const noteTagType = type.object({
     id: { type: type.ID },
     note_id: { type: type.int },
     tag_id: { type: type.int },
+    tag: { type: tagType },
     deleted_at: { type: type.string },
     created_at: { type: type.string },
     updated_at: { type: type.string }
@@ -28,15 +31,30 @@ const resolver = {
   /** Query */
   noteTag: async (obj, args, context, selectionSet) => {
     return await NoteTag.findOne({
-      where: { id: args.id },
-      attributes: selectionSet.root
+      where: { note_id: args.id },
+      attributes: selectionSet.root,
+      include: [
+        {
+          model: Tag,
+          as: 'tag',
+          attributes: _.get(selectionSet, ['child', 'tag', 'root'], [])
+        }
+      ]
     })
   },
   noteTags: async (obj, args, context, selectionSet) => {
     return await NoteTag.findAll({
       limit: args.limit,
       offset: args.offset,
-      attributes: selectionSet.root
+      attributes: selectionSet.root,
+      order: ['note_id'],
+      include: [
+        {
+          model: Tag,
+          as: 'tag',
+          attributes: _.get(selectionSet, ['child', 'tag', 'root'], [])
+        }
+      ]
     })
   },
 

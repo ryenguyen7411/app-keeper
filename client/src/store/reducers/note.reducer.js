@@ -1,7 +1,8 @@
 import * as constants from 'config/constants'
 
 const initialState = {
-  notes: []
+  notes: [],
+  noteTags: []
 }
 
 const handlers = {

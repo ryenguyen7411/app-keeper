@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
   Image.associate = function(models) {
-    Image.belongTo(models.Note, { foreignKey: 'note_id', onDelete: 'CASCADE' })
+    Image.belongsTo(models.Note, { foreignKey: 'note_id', onDelete: 'CASCADE' })
   }
   return Image
 }

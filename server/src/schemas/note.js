@@ -9,7 +9,7 @@ import apiValidation from '../services/api'
 /** Import from db and schema */
 import models from '../../db/models'
 
-const { Note, Color, Tag, Status, Sequelize } = models
+const { Note, Color, Tag, Image, Status, Sequelize } = models
 
 /** Definition of model type */
 const colorType = type.object({
@@ -17,6 +17,18 @@ const colorType = type.object({
   fields: {
     id: { type: type.ID },
     hex: { type: type.string },
+    deleted_at: { type: type.string },
+    created_at: { type: type.string },
+    updated_at: { type: type.string }
+  }
+})
+
+const imageType = type.object({
+  name: 'Image',
+  fields: {
+    id: { type: type.ID },
+    note_id: { type: type.int },
+    url: { type: type.string },
     deleted_at: { type: type.string },
     created_at: { type: type.string },
     updated_at: { type: type.string }
@@ -56,6 +68,7 @@ export const noteType = type.object({
     pinned: { type: type.boolean },
     color_id: { type: type.int },
     color: { type: colorType },
+    image: { type: imageType },
     status_id: { type: type.int },
     status: { type: statusType },
     remind_at: { type: type.string },

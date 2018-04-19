@@ -14,3 +14,15 @@ export const getNotes = () => `
   }
 }
 `
+export const getNoteTags = () => `
+{
+  noteTags {
+    id
+    note_id
+    tag {
+      id
+      title
+    }
+  }
+}
+`

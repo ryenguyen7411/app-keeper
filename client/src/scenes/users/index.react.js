@@ -3,13 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { noteGraph } from 'api/note.api'
-import { getNotes } from 'config/graphPayload'
+import { getNotes, getNoteTags } from 'config/graphPayload'
 
 import Note from 'elements/notes/note.element'
 
-const HomeNote = ({ onSelect, note }) => (
+const HomeNote = ({ onSelect, note, tags }) => (
   <div className="col-sm-6 col-md-4 col-lg-3">
-    <Note onSelect={onSelect} note={note} />
+    <Note onSelect={onSelect} note={note} tags={tags} />
   </div>
 )
 
@@ -23,6 +23,7 @@ class Home extends React.Component {
   }
   componentDidMount() {
     this.props.noteGraph(getNotes())
+    this.props.noteGraph(getNoteTags())
   }
   render() {
     return [
@@ -32,9 +33,19 @@ class Home extends React.Component {
       <div key="unpinned">
         <h6>Khác</h6>
         <div className="row gutters-4">
-          {this.props.notes.map((note, index) => (
-            <HomeNote key={index} onSelect={this.selectNote} note={note} />
-          ))}
+          {this.props.notes.map((note, index) => {
+            const tags = this.props.noteTags.filter(
+              tag => tag.note_id === note.id
+            )
+            return (
+              <HomeNote
+                key={index}
+                onSelect={this.selectNote}
+                note={note}
+                tags={tags}
+              />
+            )
+          })}
         </div>
       </div>,
       this.state.selectedNote && <div key="overlay" className="overlay" />
@@ -57,7 +68,8 @@ class Home extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    notes: state.noteReducer.notes
+    notes: state.noteReducer.notes,
+    noteTags: state.noteReducer.noteTags
   }
 }
 const mapDispatchToProps = dispatch => {
