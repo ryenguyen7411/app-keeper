@@ -1,4 +1,9 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { noteGraph } from 'api/note.api'
+import { getNotes } from 'config/graphPayload'
 
 import Note from 'elements/notes/note.element'
 
@@ -8,60 +13,6 @@ const HomeNote = ({ onSelect, note }) => (
   </div>
 )
 
-const Notes = [
-  {
-    id: 1,
-    title: 'Good',
-    contents: [
-      {
-        todo: 'Hello world',
-        isChecked: true
-      },
-      {
-        todo: 'Hello world 2',
-        isChecked: false
-      }
-    ],
-    mode: 'check',
-    background: '#E57373',
-    tags: [{ id: 1, title: 'Hello' }, { id: 2, title: 'Welcome' }]
-  },
-  {
-    id: 2,
-    title: 'Note 2',
-    contents: [
-      {
-        todo: 'Hello world',
-        isChecked: false
-      },
-      {
-        todo: 'Hello world 2',
-        isChecked: true
-      }
-    ],
-    mode: 'check',
-    background: '#448AFF',
-    tags: []
-  },
-  {
-    id: 3,
-    title: 'Note 3',
-    contents: [
-      {
-        todo: 'Hello world',
-        isChecked: true
-      },
-      {
-        todo: 'Hello world 2',
-        isChecked: false
-      }
-    ],
-    mode: 'text',
-    background: '#FFAB40',
-    tags: []
-  }
-]
-
 class Home extends React.Component {
   constructor(props) {
     super(props)
@@ -69,6 +20,9 @@ class Home extends React.Component {
     this.state = {
       selectedNote: undefined
     }
+  }
+  componentDidMount() {
+    this.props.noteGraph(getNotes())
   }
   render() {
     return [
@@ -78,7 +32,7 @@ class Home extends React.Component {
       <div key="unpinned">
         <h6>Khác</h6>
         <div className="row gutters-4">
-          {Notes.map((note, index) => (
+          {this.props.notes.map((note, index) => (
             <HomeNote key={index} onSelect={this.selectNote} note={note} />
           ))}
         </div>
@@ -101,4 +55,18 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+const mapStateToProps = state => {
+  return {
+    notes: state.noteReducer.notes
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      noteGraph
+    },
+    dispatch
+  )
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -13,6 +13,7 @@ const { Note, Sequelize } = models
 /** Definition of model type */
 const noteInputType = type.input({
   name: 'NoteInput',
+  description: '',
   fields: {
     title: { type: type.string },
     contents: { type: type.string },
@@ -59,11 +60,14 @@ const resolver = {
 
   /** Mutation */
   createNote: async (obj, args, context, selectionSet) => {
-    const note = Object.create({}, args.note)
+    const note = Object.assign({}, args.note)
+    note.color_id = note.color_id || 0
+    note.status_id = note.status_id || 1
+
     return await Note.create(note)
   },
   updateNote: async (obj, args, context, selectionSet) => {
-    const note = Object.create({}, args.note)
+    const note = Object.assign({}, args.note)
     return await Note.update(note, { where: { id: args.id } })
   },
   deleteNote: async (obj, args, context, selectionSet) => {
@@ -90,18 +94,21 @@ export const noteSchema = {
   mutation: {
     createNote: {
       type: noteType,
+      description: 'Create note',
       args: { note: { type: noteInputType } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.createNote)
     },
     updateNote: {
       type: type.int,
+      description: 'Update note',
       args: { id: { type: type.INT }, note: { type: noteInputType } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.createNote)
     },
     deleteNote: {
       type: noteType,
+      description: 'Delete note',
       args: { id: { type: type.INT } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.createNote)
