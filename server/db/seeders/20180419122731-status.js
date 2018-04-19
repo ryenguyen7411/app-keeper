@@ -11,7 +11,7 @@ module.exports = {
           updated_at: new Date()
         },
         {
-          name: 'ARCHIEVED',
+          name: 'ARCHIVED',
           created_at: new Date(),
           updated_at: new Date()
         },

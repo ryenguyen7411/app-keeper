@@ -3,13 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { noteGraph } from 'api/note.api'
-import { getNotes, getNoteTags } from 'config/graphPayload'
+import { getNote, getNotes, getNoteTags, updateNote } from 'config/graphPayload'
 
 import Note from 'elements/notes/note.element'
 
-const HomeNote = ({ onSelect, note, tags }) => (
+const HomeNote = ({ onSelect, onUpdate, note, tags }) => (
   <div className="col-sm-6 col-md-4 col-lg-3">
-    <Note onSelect={onSelect} note={note} tags={tags} />
+    <Note onSelect={onSelect} onUpdate={onUpdate} note={note} tags={tags} />
   </div>
 )
 
@@ -41,6 +41,7 @@ class Home extends React.Component {
               <HomeNote
                 key={index}
                 onSelect={this.selectNote}
+                onUpdate={this.updateNote}
                 note={note}
                 tags={tags}
               />
@@ -63,6 +64,15 @@ class Home extends React.Component {
     }))
 
     return true
+  }
+
+  updateNote = (id, updatedAttributes) => {
+    const getNoteQuery = getNote(id)
+    this.props.noteGraph(
+      updateNote(id, updatedAttributes),
+      this.props.noteGraph,
+      getNoteQuery
+    )
   }
 }
 

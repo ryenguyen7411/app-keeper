@@ -5,7 +5,7 @@ import * as constants from 'config/constants'
 
 import config from 'config/config'
 
-export function noteGraph(payload) {
+export function noteGraph(payload, ...callback) {
   return dispatch => {
     dispatch(actions.noteGraphRequest())
 
@@ -17,29 +17,16 @@ export function noteGraph(payload) {
       }
     }).then(response => {
       if (response.status === constants.STATUS_OK)
-        dispatch(actions.noteGraphSuccess(response.data))
+        dispatch(
+          actions.noteGraphSuccess({ ...response.data, callback: callback })
+        )
       else dispatch(actions.noteGraphError(response.error))
     })
   }
 }
 
-// export async function noteGraph(payload) {
-//   return dispatch => {
-//     dispatch(actions.noteGraphRequest())
-
-//     const response = function(resolve, reject) {
-//       let request = new XMLHttpRequest()
-//       request.open('POST', `${config.serverUrl}/graphiql`, true)
-//       request.setRequestHeader('Content-Type', 'application/graphql')
-//       request.send(payload)
-
-//       request.onreadystatechange = () => {
-//         if (request.readyState === constants.XML_STATE_DONE) {
-//           resolve(request.responseText)
-//         }
-//       }
-//     }
-
-//     dispatch(actions.noteGraphSuccess(JSON.parse(response)))
-//   }
-// }
+export function updateLocalNote(noteId, updatedAttributes) {
+  return dispatch => {
+    dispatch(actions.updateLocalNote({ noteId, updatedAttributes }))
+  }
+}

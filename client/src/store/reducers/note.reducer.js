@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as constants from 'config/constants'
 
 const initialState = {
@@ -13,12 +14,29 @@ const handlers = {
     }
   },
   [`${constants.NOTE_GRAPH}_SUCCESS`]: (state, action) => {
+    if (action.response.callback.length) {
+      const [func, params] = action.response.callback
+      setTimeout(func.bind(null, params), 0)
+    }
+
+    let notes = state.notes
+
     if (action.response.data.notes) {
       action.response.data.notes = action.response.data.notes.map(note => {
         note.contents = JSON.parse(note.contents)
         return note
       })
+
+      notes = action.response.data.notes
     }
+
+    if (action.response.data.note) {
+      const note = action.response.data.note
+      note.contents = JSON.parse(note.contents)
+
+      _.merge(_.find(notes, n => n.id === note.id), note)
+    }
+
     return {
       ...state,
       isLoading: false,
@@ -30,6 +48,20 @@ const handlers = {
       ...state,
       isLoading: false,
       ...action.response.data
+    }
+  },
+  [`${constants.UPDATE_LOCAL_NOTE}`]: (state, action) => {
+    const { noteId, updatedAttributes } = action.response.data
+
+    return {
+      ...state,
+      notes: {
+        ...state.notes,
+        [noteId]: {
+          ...state.notes[noteId],
+          ...updatedAttributes
+        }
+      }
     }
   }
 }

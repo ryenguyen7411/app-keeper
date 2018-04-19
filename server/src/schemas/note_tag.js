@@ -9,8 +9,9 @@ import apiValidation from '../services/api'
 /** Import from db and schema */
 import models from '../../db/models'
 import { tagType } from './tag'
+import { noteType } from './note'
 
-const { NoteTag, Tag, Sequelize } = models
+const { NoteTag, Note, Tag, Sequelize } = models
 
 /** Definition of model type */
 export const noteTagType = type.object({
@@ -18,6 +19,7 @@ export const noteTagType = type.object({
   fields: {
     id: { type: type.ID },
     note_id: { type: type.int },
+    note: { type: noteType },
     tag_id: { type: type.int },
     tag: { type: tagType },
     deleted_at: { type: type.string },
@@ -35,6 +37,11 @@ const resolver = {
       attributes: selectionSet.root,
       include: [
         {
+          model: Note,
+          as: 'note',
+          attributes: _.get(selectionSet, ['child', 'note', 'root'], [])
+        },
+        {
           model: Tag,
           as: 'tag',
           attributes: _.get(selectionSet, ['child', 'tag', 'root'], [])
@@ -49,6 +56,11 @@ const resolver = {
       attributes: selectionSet.root,
       order: ['note_id'],
       include: [
+        {
+          model: Note,
+          as: 'note',
+          attributes: _.get(selectionSet, ['child', 'note', 'root'], [])
+        },
         {
           model: Tag,
           as: 'tag',

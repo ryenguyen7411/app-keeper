@@ -48,6 +48,7 @@ const apiValidation = ({ obj, args, context, info }, func, validObj) => {
     validation.target,
     validation.include
   )
+
   return func(obj, args, context, selectionSet)
 }
 

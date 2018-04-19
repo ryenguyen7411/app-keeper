@@ -1,4 +1,5 @@
 import React from 'react'
+import 'bootstrap'
 
 import Icon from 'react-icons-kit'
 import {
@@ -57,8 +58,10 @@ class Note extends React.Component {
         onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
+          <h5>{note.status_id === 2 ? 'ARCHIVED' : ''}</h5>
           <h6 className="card-title">{note.title}</h6>
           <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
+
           <div className="tags">
             {tags.map(tag => (
               <span
@@ -69,6 +72,7 @@ class Note extends React.Component {
               </span>
             ))}
           </div>
+
           <div
             key={`note-${note.id}-toolbox`}
             className={`toolbox ${
@@ -77,8 +81,37 @@ class Note extends React.Component {
             <Icon icon={handPointerO} size={20} className="toolbox-icon" />
             <Icon icon={ic_color_lens} size={20} className="toolbox-icon" />
             <Icon icon={ic_image} size={20} className="toolbox-icon" />
-            <Icon icon={ic_archive} size={20} className="toolbox-icon" />
-            <Icon icon={ic_more_vert} size={20} className="toolbox-icon" />
+            <Icon
+              icon={ic_archive}
+              size={20}
+              className="toolbox-icon"
+              onClick={this.archive}
+            />
+
+            {/* Icon More options */}
+            <span>
+              <Icon
+                icon={ic_more_vert}
+                size={20}
+                id={`toolbox-icon-dropdown-${note.id}`}
+                className="toolbox-icon"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={e => e.stopPropagation()}
+              />
+              <div
+                className="dropdown-menu"
+                aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
+                <div className="dropdown-item" onClick={this.delete}>
+                  Xóa ghi chú
+                </div>
+                <div className="dropdown-item">Thay đổi nhãn</div>
+                <div className="dropdown-item">Tạo bản sao</div>
+                <div className="dropdown-item">Ẩn hộp kiểm</div>
+              </div>
+            </span>
+
             {!this.state.isSelected && (
               <Icon
                 icon={ic_done}
@@ -86,13 +119,19 @@ class Note extends React.Component {
                 className="toolbox-icon icon-checkbox"
               />
             )}
-            <Icon icon={pin} size={16} className="toolbox-icon icon-pinned" />
+            <Icon
+              icon={pin}
+              size={16}
+              className="toolbox-icon icon-pinned"
+              onClick={this.pin}
+            />
           </div>
         </div>
       </div>
     )
   }
 
+  /** MOUSE EVENT - START */
   hover = () => {
     this.setState(state => ({
       ...state,
@@ -117,7 +156,7 @@ class Note extends React.Component {
     }))
   }
 
-  deselect = e => {
+  deselect = () => {
     const canDeselect = this.props.onSelect(undefined)
     if (!canDeselect) return false
 
@@ -126,6 +165,39 @@ class Note extends React.Component {
       isSelected: false
     }))
   }
+  /** MOUSE EVENT - END */
+
+  /** TOOLBOX ACTION - START */
+  archive = e => {
+    e.stopPropagation()
+
+    this.props.onUpdate(this.props.note.id, { status_id: 2 })
+  }
+
+  delete = e => {
+    e.stopPropagation()
+
+    console.log('DELETED')
+  }
+
+  pin = e => {
+    e.stopPropagation()
+  }
+
+  // color
+  // tag
+
+  clone = e => {
+    e.stopPropagation()
+  }
+
+  changeMode = e => {
+    e.stopPropagation()
+  }
+
+  // remind
+
+  /** TOOLBOX ACTION - END */
 }
 
 export default Note
