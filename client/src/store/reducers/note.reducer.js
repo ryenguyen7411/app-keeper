@@ -1,20 +1,18 @@
 //import * as constants from 'actions/constants'
 
 const initialState = {
-    headerMenuVisible: false,
+  headerMenuVisible: false
 }
 
-const handlers = {
-
-}
+const handlers = {}
 
 const reducer = (state = initialState, action) => {
-    // if (handlers[action.type]) {
-    //     return handlers[action.type](state, action);
-    // }
-    // return state;
+  // if (handlers[action.type]) {
+  //     return handlers[action.type](state, action);
+  // }
+  // return state;
 
-    return initialState
+  return initialState
 }
 
 export default reducer

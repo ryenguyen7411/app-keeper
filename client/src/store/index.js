@@ -5,9 +5,7 @@ import thunk from 'redux-thunk'
 import noteReducer from './reducers/note.reducer'
 
 const store = combineReducers({
-    noteReducer
-});
+  noteReducer
+})
 
-export default createStore(store, composeWithDevTools(
-    applyMiddleware(thunk)
-));
+export default createStore(store, composeWithDevTools(applyMiddleware(thunk)))

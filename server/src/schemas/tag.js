@@ -41,14 +41,14 @@ const resolver = {
 
   /** Mutation */
   createTag: async (obj, args, context, selectionSet) => {
-    return Tag.create({ title: args.title })
+    return await Tag.create({ title: args.title })
   },
   updateTag: async (obj, args, context, selectionSet) => {
-    return Tag.update({ title: args.title }, { where: { id: args.id } })
+    return await Tag.update({ title: args.title }, { where: { id: args.id } })
   },
   deleteTag: async (obj, args, context, selectionSet) => {
     // TODO: Delete associate NoteTag
-    return Tag.destroy({ where: { id: args.id } })
+    return await Tag.destroy({ where: { id: args.id } })
   }
 }
 
@@ -62,7 +62,7 @@ export const tagSchema = {
         apiValidation({ obj, args, context, info }, resolver.tag)
     },
     tags: {
-      type: tagType,
+      type: type.list(tagType),
       args: { limit: { type: type.int }, offset: { type: type.int } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.tags)

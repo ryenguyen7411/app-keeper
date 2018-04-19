@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      color: {
+      color_id: {
         allowNull: false,
         type: Sequelize.STRING
       },
