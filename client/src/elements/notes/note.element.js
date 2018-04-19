@@ -12,9 +12,7 @@ import { pin } from 'react-icons-kit/iconic'
 import { handPointerO } from 'react-icons-kit/fa'
 
 function Todo({ todoList, noteId, mode }) {
-  const todos = JSON.parse(todoList)
-
-  return todos
+  return todoList
     .slice(0, 8)
     .map((todo, index) => (
       <TodoItem

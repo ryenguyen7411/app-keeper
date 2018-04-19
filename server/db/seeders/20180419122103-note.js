@@ -21,6 +21,7 @@ module.exports = {
           ]),
           sort_value: 0,
           color_id: 1,
+          mode: 'check',
           status_id: 1,
           created_at: new Date(),
           updated_at: new Date()
@@ -39,6 +40,7 @@ module.exports = {
           ]),
           sort_value: 0,
           color_id: 2,
+          mode: 'check',
           status_id: 1,
           created_at: new Date(),
           updated_at: new Date()
@@ -57,6 +59,7 @@ module.exports = {
           ]),
           sort_value: 0,
           color_id: 3,
+          mode: 'text',
           status_id: 1,
           created_at: new Date(),
           updated_at: new Date()

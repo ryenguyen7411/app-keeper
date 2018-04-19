@@ -7,6 +7,7 @@ export const getNotes = () => `
     sort_value,
     pinned,
     color_id,
+    mode,
     status_id,
     remind_at,
     created_at,

@@ -53,6 +53,7 @@ const noteInputType = type.input({
     contents: { type: type.string },
     pinned: { type: type.boolean },
     color_id: { type: type.int },
+    mode: { type: type.string },
     status_id: { type: type.int },
     remind_at: { type: type.string }
   }
@@ -68,6 +69,7 @@ export const noteType = type.object({
     pinned: { type: type.boolean },
     color_id: { type: type.int },
     color: { type: colorType },
+    mode: { type: type.string },
     image: { type: imageType },
     status_id: { type: type.int },
     status: { type: statusType },
@@ -165,14 +167,14 @@ export const noteSchema = {
       description: 'Update note',
       args: { id: { type: type.INT }, note: { type: noteInputType } },
       resolve: (obj, args, context, info) =>
-        apiValidation({ obj, args, context, info }, resolver.createNote)
+        apiValidation({ obj, args, context, info }, resolver.updateNote)
     },
     deleteNote: {
       type: noteType,
       description: 'Delete note',
       args: { id: { type: type.INT } },
       resolve: (obj, args, context, info) =>
-        apiValidation({ obj, args, context, info }, resolver.createNote)
+        apiValidation({ obj, args, context, info }, resolver.deleteNote)
     }
   }
 }

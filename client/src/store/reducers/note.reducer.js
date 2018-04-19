@@ -13,6 +13,12 @@ const handlers = {
     }
   },
   [`${constants.NOTE_GRAPH}_SUCCESS`]: (state, action) => {
+    if (action.response.data.notes) {
+      action.response.data.notes = action.response.data.notes.map(note => {
+        note.contents = JSON.parse(note.contents)
+        return note
+      })
+    }
     return {
       ...state,
       isLoading: false,
