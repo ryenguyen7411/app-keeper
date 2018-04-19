@@ -14,7 +14,7 @@ const { gte } = Sequelize.Op
 
 // Set up the express app
 const app = express()
-app.use('*', cors({ origin: 'http://localhost:3000' }))
+app.use('*', cors({ origin: 'http://localhost:5000' }))
 
 // Log requests to the console.
 app.use(logger('dev'))

@@ -6,6 +6,7 @@ const env = process.env.NODE_ENV || 'development'
 const config = require(`${__dirname}/../../src/config/config.json`)[env]
 const db = {}
 
+/* eslint-disable */
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable], config)
 } else {

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Notes', {
@@ -18,15 +18,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       pinned: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       color: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      tag_id: {
-        type: Sequelize.INTEGER
-      },
-      status: {
+      status_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       remind_at: {
@@ -43,9 +43,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Notes');
+    return queryInterface.dropTable('Notes')
   }
-};
+}

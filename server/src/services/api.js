@@ -35,13 +35,13 @@ const apiValidation = ({ obj, args, context, info }, func, validObj) => {
     validObj
   )
 
-  if (validation.needAuthenticate) {
-    authenticated(context)
-  }
+  // if (validation.needAuthenticate) {
+  //   authenticated(context)
+  // }
 
-  if (validation.needAuthorize) {
-    authorized(context, validation.role)
-  }
+  // if (validation.needAuthorize) {
+  //   authorized(context, validation.role)
+  // }
 
   const selectionSet = getSelectionSet(
     info,

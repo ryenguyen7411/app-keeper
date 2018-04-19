@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('NoteTags', {
@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       note_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       tag_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       deleted_at: {
@@ -25,9 +27,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('NoteTags');
+    return queryInterface.dropTable('NoteTags')
   }
-};
+}
