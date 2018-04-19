@@ -50,6 +50,7 @@ class Note extends React.Component {
     return (
       <div
         className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
+        style={{ backgroundColor: note.background }}
         onMouseEnter={this.hover}
         onMouseLeave={this.unhover}
         onClick={this.select}
@@ -58,6 +59,16 @@ class Note extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{note.title}</h6>
           <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
+          <div className="tags">
+            {note.tags.map(tag => (
+              <span
+                key={`tag-${note.id}-${tag.id}`}
+                className="badge mr-1"
+                style={{ backgroundColor: 'rgba(0,0,0,.1)' }}>
+                {tag.title}
+              </span>
+            ))}
+          </div>
           <div
             key={`note-${note.id}-toolbox`}
             className={`toolbox ${

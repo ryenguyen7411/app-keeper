@@ -22,7 +22,9 @@ const Notes = [
         isChecked: false
       }
     ],
-    mode: 'check'
+    mode: 'check',
+    background: '#E57373',
+    tags: [{ id: 1, title: 'Hello' }, { id: 2, title: 'Welcome' }]
   },
   {
     id: 2,
@@ -37,7 +39,9 @@ const Notes = [
         isChecked: true
       }
     ],
-    mode: 'check'
+    mode: 'check',
+    background: '#448AFF',
+    tags: []
   },
   {
     id: 3,
@@ -52,7 +56,9 @@ const Notes = [
         isChecked: false
       }
     ],
-    mode: 'text'
+    mode: 'text',
+    background: '#FFAB40',
+    tags: []
   }
 ]
 
