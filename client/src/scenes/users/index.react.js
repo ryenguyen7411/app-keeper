@@ -16,8 +16,22 @@ import {
   getColors
 } from 'config/graphPayload'
 
-import { STATUS_PUBLIC, STATUS_DELETED } from 'config/constants'
+import {
+  STATUS_PUBLIC,
+  STATUS_ARCHIVED,
+  STATUS_DELETED
+} from 'config/constants'
 import Note from 'elements/notes/note.element'
+
+const CurrentHash = {
+  HOME: '',
+  NOTES: '#notes',
+  TAGS: '#tags',
+  ARCHIVED: '#archived',
+  DELETED: '#deleted',
+  SEARCH: '#search',
+  REMINDER: '#reminder'
+}
 
 const HomeNote = ({
   onSelect,
@@ -31,9 +45,8 @@ const HomeNote = ({
   tags,
   colors
 }) => {
-  // console.log('HOME note', onCreateClone, note)
   return (
-    <div className="col-sm-6 col-md-4 col-lg-3">
+    <div className="col-sm-6 col-md-4 col-lg-3 my-1">
       <Note
         onSelect={onSelect}
         onCreate={onCreate}
@@ -54,7 +67,9 @@ class Home extends React.Component {
     super(props)
 
     this.state = {
-      selectedNote: undefined
+      selectedNote: undefined,
+      currentHash: '',
+      isInitialized: false
     }
   }
   componentDidMount() {
@@ -62,15 +77,61 @@ class Home extends React.Component {
     this.props.noteGraph(getNoteTags())
     this.props.noteGraph(getColors())
   }
+
+  componentWillReceiveProps(props) {
+    if (
+      this.state.isInitialized &&
+      props.location.hash === this.state.currentHash
+    ) {
+      return
+    }
+
+    if (!props.notes) return
+
+    const sourceNotes = props.notes
+    const isInitialized = this.state.isInitialized
+
+    const currentHash = this.state.currentHash
+    const hash = props.location.hash
+
+    function getNotes() {
+      if (hash === CurrentHash.HOME || hash === CurrentHash.NOTES) {
+        if (
+          !isInitialized ||
+          (currentHash !== CurrentHash.HOME &&
+            currentHash !== CurrentHash.NOTES)
+        ) {
+          return sourceNotes.filter(note => note.status.id === STATUS_PUBLIC)
+        }
+      } else if (hash === CurrentHash.TAGS) {
+        //
+      } else if (hash === CurrentHash.ARCHIVED) {
+        return sourceNotes.filter(note => note.status.id === STATUS_ARCHIVED)
+      } else if (hash === CurrentHash.DELETED) {
+        //
+      } else if (hash === CurrentHash.SEARCH) {
+        //
+      } else if (hash === CurrentHash.REMINDER) {
+        //
+      }
+    }
+
+    const newN = getNotes()
+
+    this.setState(state => ({
+      ...state,
+      notes: newN,
+      currentHash: hash,
+      isInitialized: true
+    }))
+  }
+
   render() {
-    const notes = this.props.notes.filter(
-      note => note.status.id === STATUS_PUBLIC
-    )
+    const notes = this.state.notes || []
+    const { noteTags = [], colors = [] } = this.props
 
     const pinnedNote = notes.filter(note => note.pinned === true)
     const unPinnedNote = notes.filter(note => note.pinned !== true)
-
-    const { colors } = this.props
 
     return [
       // <HomeNote
@@ -80,34 +141,32 @@ class Home extends React.Component {
       //   isEmpty={true}
       //   colors={colors}
       // />,
-      <div key="pinned">
-        <h6>Được ghim</h6>
-        <div className="row gutters-4">
-          {pinnedNote.map((note, index) => {
-            const tags = this.props.noteTags.filter(
-              tag => tag.note_id === note.id
-            )
-            return (
-              <HomeNote
-                key={index}
-                onSelect={this.selectNote}
-                onUpdate={this.updateNote}
-                onDelete={this.deleteNote}
-                note={note}
-                tags={tags}
-                colors={colors}
-              />
-            )
-          })}
+      !!pinnedNote.length && (
+        <div key="pinned">
+          <p className="mb-0 mt-2">Được ghim</p>
+          <div className="row gutters-4">
+            {pinnedNote.map((note, index) => {
+              const tags = noteTags.filter(tag => tag.note_id === note.id)
+              return (
+                <HomeNote
+                  key={index}
+                  onSelect={this.selectNote}
+                  onUpdate={this.updateNote}
+                  onDelete={this.deleteNote}
+                  note={note}
+                  tags={tags}
+                  colors={colors}
+                />
+              )
+            })}
+          </div>
         </div>
-      </div>,
+      ),
       <div key="unpinned">
-        <h6>Khác</h6>
+        {!!pinnedNote.length && <p className="mb-0 mt-2">Khác</p>}
         <div className="row gutters-4">
           {unPinnedNote.map((note, index) => {
-            const tags = this.props.noteTags.filter(
-              tag => tag.note_id === note.id
-            )
+            const tags = noteTags.filter(tag => tag.note_id === note.id)
             return (
               <HomeNote
                 key={index}

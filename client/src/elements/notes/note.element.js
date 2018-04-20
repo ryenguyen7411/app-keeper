@@ -98,7 +98,7 @@ function TodoItem({ className, index, todo, mode, onChange }) {
 function ColorPalette({ colors, current, onChangeColor }) {
   const changeColor = e => {
     if (e.target.id) {
-      onChangeColor(e.target.id)
+      onChangeColor(parseInt(e.target.id))
     }
   }
   return (

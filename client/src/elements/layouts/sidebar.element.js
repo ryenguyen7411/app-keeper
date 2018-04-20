@@ -1,14 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Icon from 'react-icons-kit'
 import { ic_menu } from 'react-icons-kit/md'
 
 const Sidebar = ({ className }) => (
   <div className={`sidebar ${className}`}>
-    <div className="sidebar-item">
+    <Link className="sidebar-item" to="#notes">
       <Icon size={24} icon={ic_menu} />
       Ghi chú
-    </div>
+    </Link>
     <div className="sidebar-item">
       <Icon size={24} icon={ic_menu} />
       Lời nhắc
@@ -23,10 +24,10 @@ const Sidebar = ({ className }) => (
 
     <div className="separator" />
 
-    <div className="sidebar-item">
+    <Link className="sidebar-item" to="#archived">
       <Icon size={24} icon={ic_menu} />
       Lưu trữ
-    </div>
+    </Link>
     <div className="sidebar-item">
       <Icon size={24} icon={ic_menu} />
       Thùng rác

@@ -1,10 +1,7 @@
 import _ from 'lodash'
 import * as constants from 'config/constants'
 
-const initialState = {
-  notes: [],
-  noteTags: []
-}
+const initialState = {}
 
 const handlers = {
   [`${constants.NOTE_GRAPH}_REQUEST`]: (state, action) => {
