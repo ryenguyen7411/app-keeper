@@ -1,5 +1,7 @@
 import React from 'react'
+import $ from 'jquery'
 import 'bootstrap'
+import _ from 'lodash'
 
 import Icon from 'react-icons-kit'
 import {
@@ -12,31 +14,48 @@ import {
 import { pin } from 'react-icons-kit/iconic'
 import { handPointerO } from 'react-icons-kit/fa'
 
-function Todo({ todoList, noteId, mode }) {
+function Todo({ todoList, noteId, mode, onChange }) {
   return todoList
     .slice(0, 8)
     .map((todo, index) => (
       <TodoItem
         key={`todo-${noteId}-${index}`}
         className="card-text"
+        index={index}
         todo={todo}
         mode={mode}
+        onChange={onChange}
       />
     ))
 }
 
-function TodoItem({ className, todo, mode }) {
+function TodoItem({ className, index, todo, mode, onChange }) {
+  const _className = `${className} ${
+    mode === 'check' && todo.isChecked ? 'text-strike' : ''
+  }`
+
+  const handleChange = e => {
+    const target = e.target
+    onChange(e, index, target.checked)
+  }
+
   return (
     <form>
-      <p className={className}>
-        {mode === 'check' && <input type="checkbox" checked={todo.isChecked} />}
+      <p className={_className}>
+        {mode === 'check' && (
+          <input
+            type="checkbox"
+            checked={todo.isChecked}
+            onChange={handleChange}
+          />
+        )}
         {todo.todo}
       </p>
     </form>
   )
 }
 
-function ColorPalette({ colors, onChangeColor }) {
+function ColorPalette({ colors, current, onChangeColor }) {
   const changeColor = e => {
     if (e.target.id) {
       onChangeColor(e.target.id)
@@ -49,8 +68,9 @@ function ColorPalette({ colors, onChangeColor }) {
           <div
             id={color.id}
             className="color-palette-element"
-            style={{ backgroundColor: color.hex }}
-          />
+            style={{ backgroundColor: color.hex }}>
+            {color.id === current && <Icon icon={ic_done} size={24} />}
+          </div>
         </div>
       ))}
     </div>
@@ -80,9 +100,13 @@ class Note extends React.Component {
         onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
-          <h5>{note.status.name}</h5>
           <h6 className="card-title">{note.title}</h6>
-          <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
+          <Todo
+            todoList={note.contents}
+            noteId={note.id}
+            mode={note.mode}
+            onChange={this.updateContents}
+          />
 
           <div className="tags">
             {tags.map(tag => (
@@ -102,6 +126,7 @@ class Note extends React.Component {
             }`}>
             <Icon icon={handPointerO} size={20} className="toolbox-icon" />
 
+            {/* Icon Color palette */}
             <span>
               <Icon
                 icon={ic_color_lens}
@@ -111,6 +136,7 @@ class Note extends React.Component {
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                onMouseEnter={this.showColorPalette}
                 onClick={e => e.stopPropagation()}
               />
               <div
@@ -119,6 +145,7 @@ class Note extends React.Component {
                 style={{ width: '160px' }}>
                 <ColorPalette
                   colors={colors}
+                  current={note.color.id}
                   onChangeColor={this.changeColor}
                 />
               </div>
@@ -155,7 +182,7 @@ class Note extends React.Component {
                   Tạo bản sao
                 </div>
                 <div className="dropdown-item" onClick={this.changeMode}>
-                  Ẩn hộp kiểm
+                  {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
                 </div>
               </div>
             </span>
@@ -170,7 +197,9 @@ class Note extends React.Component {
             <Icon
               icon={pin}
               size={16}
-              className="toolbox-icon icon-pinned"
+              className={`toolbox-icon icon-pinned ${
+                note.pinned === true ? 'visible' : ''
+              }`}
               onClick={this.togglePinned}
             />
           </div>
@@ -257,9 +286,26 @@ class Note extends React.Component {
     })
   }
 
+  updateContents = (e, id, isChecked) => {
+    e.stopPropagation()
+
+    console.log('UPDATE CONTENTS', id, isChecked)
+    const targetTodo = _.find(
+      this.props.note.contents,
+      (n, index) => index === id
+    )
+    targetTodo.isChecked = isChecked
+
+    this.props.onUpdate(this.props.note.id, {
+      contents: this.props.note.contents
+    })
+  }
+
   // remind
 
   /** TOOLBOX ACTION - END */
+
+  showColorPalette = e => {}
 }
 
 export default Note

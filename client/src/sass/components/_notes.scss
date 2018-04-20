@@ -19,11 +19,7 @@
         &-pin {}
     }
     .toolbox {
-        opacity: 0;
         transition: $transition;
-        &.visible {
-            opacity: 1;
-        }
         &-icon {
             padding: 0.4rem;
             color: $dark;
@@ -43,6 +39,9 @@
                     position: absolute;
                     top: 0;
                     right: 0;
+                    &.visible {
+                        color: $primary;
+                    }
                 }
             }
         }
@@ -50,6 +49,9 @@
     .color-palette {
         margin: 0;
         &-element {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin: 4px auto;
             width: 32px;
             height: 32px;
