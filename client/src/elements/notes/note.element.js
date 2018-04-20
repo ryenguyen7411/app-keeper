@@ -218,7 +218,7 @@ class Note extends React.Component {
                 : 'invisible'
             }`}>
             <div className="icon">
-              <Icon icon={handPointerO} size={20} className="toolbox-icon" />
+              {/* <Icon icon={handPointerO} size={20} className="toolbox-icon" /> */}
 
               {/* Icon Color palette */}
               <span>

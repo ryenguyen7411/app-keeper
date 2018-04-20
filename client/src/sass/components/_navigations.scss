@@ -34,8 +34,6 @@
 
 .sidebar {
     position: fixed;
-    display: flex;
-    flex-direction: column;
     margin-top: 64px;
     margin-left: -220px;
     padding: 0 4px;
@@ -49,13 +47,20 @@
             width: calc(100% - 220px);
         }
     }
+    &-inner {
+        height: 100%;
+        transition: $transition;
+        &:hover {
+            overflow-y: scroll;
+        }
+    }
     &-item {
         display: flex;
         align-items: center;
         color: $dark;
         transition: $transition;
         &:not(.control) {
-            flex-basis: 50px;
+            height: 50px;
             &:hover {
                 background: rgba(lighten($dark, 20%), 0.3);
                 color: inherit;

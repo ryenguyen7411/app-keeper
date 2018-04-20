@@ -14,6 +14,7 @@ import { ic_add } from 'react-icons-kit/md'
 const Sidebar = ({ className, tags = [] }) => {
   return (
     <div className={`sidebar ${className}`}>
+      <div className="sidebar-inner">
       <Link className="sidebar-item" to="#notes">
         <Icon size={24} icon={ic_highlight} />
         Ghi chú
@@ -67,7 +68,7 @@ const Sidebar = ({ className, tags = [] }) => {
       <div className="sidebar-item">
         <Icon size={24} icon={ic_settings} />
         Cài đặt
-      </div>
+      </div></div>
     </div>
   )
 }

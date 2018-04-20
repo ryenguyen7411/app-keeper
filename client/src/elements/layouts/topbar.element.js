@@ -7,11 +7,11 @@ const SearchBox = () => (
   <form className="searchbox">
     <div className="input-group">
       <div className="input-group-addon">
-        <Icon icon={ic_menu} size={28} className="" />
+        {/* <Icon icon={ic_menu} size={28} className="" /> */}
       </div>
       <input
         className="form-control"
-        placeholder="I can help you to find anything you want!"
+        placeholder="Under maintainence..."
       />
     </div>
   </form>
@@ -44,7 +44,6 @@ const Topbar = ({ onToggleSidebar }) => {
           className="toolbox-icon"
           onClick={reload}
         />
-        <Icon icon={ic_menu} size={28} className="toolbox-icon" />
       </div>
     </div>
   )

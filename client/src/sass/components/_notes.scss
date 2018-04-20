@@ -94,6 +94,7 @@
                 &-delete,
                 &-edit {
                     color: $dark;
+                    cursor: pointer;
                     &:hover {
                         color: darken($dark, 20%);
                     }

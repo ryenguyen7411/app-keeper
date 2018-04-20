@@ -37,7 +37,8 @@ const handlers = {
     return {
       ...state,
       isLoading: false,
-      ...action.response.data
+      ...action.response.data,
+      notes
     }
   },
   [`${constants.NOTE_GRAPH}_ERROR`]: (state, action) => {

@@ -68,6 +68,7 @@ class Home extends React.Component {
     this.state = {
       selectedNote: undefined,
       currentHash: '',
+      currentAttr: undefined,
       isInitialized: false
     }
   }
@@ -77,11 +78,13 @@ class Home extends React.Component {
     const [hash, attr] = props.location.hash.split('/')
 
     /** FILTER NOTE BASE ON CURRENT HASH */
-    if (this.state.isInitialized && hash === this.state.currentHash) {
+    if (this.state.isInitialized && hash === this.state.currentHash && attr === this.state.currentAttr) {
       return
     }
 
     if (!props.notes || !props.noteTags) return
+
+    console.log('blababla')
 
     const sourceNotes = props.notes
     const sourceNoteTags = props.noteTags
@@ -100,8 +103,10 @@ class Home extends React.Component {
         }
       } else if (hash === CurrentHash.TAGS) {
         const hashTag = decodeURI(attr)
+
+
         const noteIds = sourceNoteTags
-          .filter(tag => tag.title === hashTag)
+          .filter(noteTag => noteTag.tag.title === hashTag)
           .map(tag => tag.note_id)
 
         return sourceNotes.filter(note => noteIds.indexOf(note.id) >= 0)
@@ -122,6 +127,7 @@ class Home extends React.Component {
       ...state,
       notes: newN,
       currentHash: hash,
+      currentAttr: attr,
       isInitialized: true
     }))
   }
@@ -205,8 +211,6 @@ class Home extends React.Component {
   createNote = (id, updateAttributes) => {}
 
   updateNote = (id, updatedAttributes) => {
-    console.log('PINNED', id, updatedAttributes)
-
     const getNoteQuery = getNote(id)
     this.props.noteGraph(
       updateNote(id, updatedAttributes),
