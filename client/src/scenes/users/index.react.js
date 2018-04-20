@@ -19,6 +19,7 @@ import {
   STATUS_DELETED
 } from 'config/constants'
 import Note from 'elements/notes/note.element'
+import { full } from 'react-icons-kit/iconic'
 
 const CurrentHash = {
   HOME: '',

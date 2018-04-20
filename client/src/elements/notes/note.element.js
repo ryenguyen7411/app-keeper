@@ -57,18 +57,14 @@ function collectTarget(connect, monitor) {
 function Todo({ todoList, noteId, mode, onChange, isEditable }) {
   function handleClick(e) {
     e.stopPropagation()
-
-    console.log('CLICKED')
   }
 
   if (isEditable) {
     const text = todoList.map(todo => todo.todo).join('\n')
     return (
-      <div
-        onClickCapture={handleClick}
-        style={{ width: '100%', height: '100px', background: 'green' }}>
+      <div onClickCapture={handleClick}>
         <form>
-          <textarea value={text} onChange={onChange} />
+          <textarea autoFocus value={text} onChange={onChange} />
         </form>
       </div>
     )
@@ -93,6 +89,8 @@ function TodoItem({ className, index, todo, mode, onChange }) {
   }`
 
   const handleChange = e => {
+    e.stopPropagation()
+
     const target = e.target
     onChange(e, index, target.checked)
   }
@@ -145,6 +143,24 @@ class Note extends React.Component {
       isShowColorPalette: false
     }
   }
+
+  componentDidMount() {
+    if (this.props.isEmpty) {
+      return
+    }
+
+    const state = this.state
+    const noteId = this.props.note.id
+    const deselect = this.deselect
+
+    // this.addEventListener('click', function(e) {
+    //   console.log('TRIGGER')
+    //   if (state.isSelected && e.target.id !== `note-${noteId}`) {
+    //     deselect()
+    //   }
+    // })
+  }
+
   render() {
     const {
       connectDragSource,
@@ -162,6 +178,7 @@ class Note extends React.Component {
 
     const NoteElement = (
       <div
+        id={`note-${note.id}`}
         className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
         style={{
           backgroundColor: note.color.hex,
@@ -170,7 +187,7 @@ class Note extends React.Component {
         onMouseEnter={this.hover}
         onMouseLeave={this.unhover}
         onClick={this.select}
-        onBlur={this.deselect}
+        // onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
           <h6 className="card-title">{note.title}</h6>
@@ -200,84 +217,92 @@ class Note extends React.Component {
                 ? 'visible'
                 : 'invisible'
             }`}>
-            <Icon icon={handPointerO} size={20} className="toolbox-icon" />
+            <div className="icon">
+              <Icon icon={handPointerO} size={20} className="toolbox-icon" />
 
-            {/* Icon Color palette */}
-            <span>
-              <Icon
-                icon={ic_color_lens}
-                size={20}
-                id={`toolbox-icon-color-${note.id}`}
-                className="toolbox-icon"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                onMouseEnter={this.showColorPalette}
-                onClick={e => e.stopPropagation()}
-              />
-              <div
-                className="dropdown-menu"
-                aria-labelledby={`toolbox-icon-color-${note.id}`}
-                style={{ width: '160px' }}>
-                <ColorPalette
-                  colors={colors}
-                  current={note.color.id}
-                  onChangeColor={this.changeColor}
+              {/* Icon Color palette */}
+              <span>
+                <Icon
+                  icon={ic_color_lens}
+                  size={20}
+                  id={`toolbox-icon-color-${note.id}`}
+                  className="toolbox-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  onMouseEnter={this.showColorPalette}
+                  onClick={e => e.stopPropagation()}
                 />
-              </div>
-            </span>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby={`toolbox-icon-color-${note.id}`}
+                  style={{ width: '160px' }}>
+                  <ColorPalette
+                    colors={colors}
+                    current={note.color.id}
+                    onChangeColor={this.changeColor}
+                  />
+                </div>
+              </span>
 
-            <Icon icon={ic_image} size={20} className="toolbox-icon" />
-            <Icon
-              icon={ic_archive}
-              size={20}
-              className="toolbox-icon"
-              onClick={this.archive}
-            />
-
-            {/* Icon More options */}
-            <span>
+              <Icon icon={ic_image} size={20} className="toolbox-icon" />
               <Icon
-                icon={ic_more_vert}
+                icon={ic_archive}
                 size={20}
-                id={`toolbox-icon-dropdown-${note.id}`}
                 className="toolbox-icon"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                onClick={e => e.stopPropagation()}
+                onClick={this.archive}
               />
-              <div
-                className="dropdown-menu"
-                aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
-                <div className="dropdown-item" onClick={this.delete}>
-                  Xóa ghi chú
-                </div>
-                <div className="dropdown-item">Thay đổi nhãn</div>
-                <div className="dropdown-item" onClick={this.clone}>
-                  Tạo bản sao
-                </div>
-                <div className="dropdown-item" onClick={this.changeMode}>
-                  {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
-                </div>
-              </div>
-            </span>
 
-            {!this.state.isSelected && (
+              {/* Icon More options */}
+              <span>
+                <Icon
+                  icon={ic_more_vert}
+                  size={20}
+                  id={`toolbox-icon-dropdown-${note.id}`}
+                  className="toolbox-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  onClick={e => e.stopPropagation()}
+                />
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
+                  <div className="dropdown-item" onClick={this.delete}>
+                    Xóa ghi chú
+                  </div>
+                  <div className="dropdown-item">Thay đổi nhãn</div>
+                  <div className="dropdown-item" onClick={this.clone}>
+                    Tạo bản sao
+                  </div>
+                  <div className="dropdown-item" onClick={this.changeMode}>
+                    {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
+                  </div>
+                </div>
+              </span>
+
+              {!this.state.isSelected && (
+                <Icon
+                  icon={ic_done}
+                  size={16}
+                  className="toolbox-icon icon-checkbox"
+                />
+              )}
               <Icon
-                icon={ic_done}
+                icon={pin}
                 size={16}
-                className="toolbox-icon icon-checkbox"
+                className={`toolbox-icon icon-pinned ${
+                  note.pinned === true ? 'visible' : ''
+                }`}
+                onClick={this.togglePinned}
               />
+            </div>
+
+            {this.state.isSelected && (
+              <div className="close text-uppercase" onClick={this.deselect}>
+                <p className="m-0">Đóng</p>
+              </div>
             )}
-            <Icon
-              icon={pin}
-              size={16}
-              className={`toolbox-icon icon-pinned ${
-                note.pinned === true ? 'visible' : ''
-              }`}
-              onClick={this.togglePinned}
-            />
           </div>
         </div>
       </div>
@@ -314,8 +339,6 @@ class Note extends React.Component {
   }
 
   deselect = e => {
-    console.log(e, e.currentTarget)
-
     const canDeselect = this.props.onSelect(undefined)
     if (!canDeselect) return false
 

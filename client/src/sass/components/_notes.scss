@@ -1,14 +1,17 @@
 .note {
     @include card();
     background: $white;
-    transition: $transition;
+    transition: $transition-long;
     &.fullscreen {
         @include card($depth: 2, $hover: false);
         position: fixed;
+        left: 50%;
+        top: 30%;
         width: 560px;
         max-width: 100%;
         z-index: 1000;
-        transform: translateX(100% - 50%);
+        transform: translateX(-50%);
+        transition: $transition-long;
     }
     .icon {
         &-select {
@@ -19,7 +22,10 @@
         &-pin {}
     }
     .toolbox {
-        transition: $transition;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: $transition-long;
         &-icon {
             padding: 0.4rem;
             color: $dark;
@@ -100,5 +106,13 @@
     }
     &-dialog {
         max-width: 320px;
+    }
+    &.init-show {
+        position: relative !important;
+        display: block !important;
+        z-index: 0;
+        &.show {
+            z-index: 10000;
+        }
     }
 }
