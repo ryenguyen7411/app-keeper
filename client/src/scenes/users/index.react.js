@@ -153,11 +153,11 @@ class Home extends React.Component {
         <div key="pinned">
           <p className="mb-0 mt-2">Được ghim</p>
           <div className="row gutters-4">
-            {pinnedNote.map((note, index) => {
+            {pinnedNote.map((note) => {
               const tags = noteTags.filter(tag => tag.note_id === note.id)
               return (
                 <HomeNote
-                  key={index}
+                  key={`homenote-${note.id}`}
                   onSelect={this.selectNote}
                   onUpdate={this.updateNote}
                   onDelete={this.deleteNote}

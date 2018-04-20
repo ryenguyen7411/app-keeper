@@ -169,9 +169,7 @@ class Note extends React.Component {
         }}
         onMouseEnter={this.hover}
         onMouseLeave={this.unhover}
-        onClick={this.select}
-        // onBlur={this.deselect}
-        tabIndex={0}>
+        onClick={this.select}>
         <div className="card-body">
           <h6 className="card-title">{note.title}</h6>
           <Todo

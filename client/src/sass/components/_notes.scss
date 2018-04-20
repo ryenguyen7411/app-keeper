@@ -29,6 +29,7 @@
         &-icon {
             padding: 0.4rem;
             color: $dark;
+            cursor: pointer;
             &:hover {
                 color: darken($dark, 15%);
             }
