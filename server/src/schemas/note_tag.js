@@ -106,7 +106,7 @@ export const noteTagSchema = {
         apiValidation({ obj, args, context, info }, resolver.createNoteTag)
     },
     deleteNoteTag: {
-      type: noteTagType,
+      type: type.int,
       args: { note_id: { type: type.INT }, tag_id: { type: type.INT } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.createNoteTag)

@@ -50,13 +50,33 @@ export const createNote = note => {
   for (const key in note) {
     if (note.hasOwnProperty(key)) {
       const element = note[key]
-      str += `${key}: ${element},`
+      str += `${key}: ${
+        typeof element === 'string' ? `"${element}"` : element
+      },`
     }
   }
 
   return `
     mutation {
-      createNote(note: {${str}})
+      createNote(note: {${str}}) {
+        id,
+        title,
+        contents,
+        sort_value,
+        pinned,
+        color {
+          id
+          hex
+        },
+        mode,
+        status {
+          id
+          name
+        },
+        remind_at,
+        created_at,
+        updated_at
+      }
     }
   `
 }
@@ -65,7 +85,9 @@ export const updateNote = (noteId, updatedAttributes) => {
   for (const key in updatedAttributes) {
     if (updatedAttributes.hasOwnProperty(key)) {
       const element = updatedAttributes[key]
-      str += `${key}: ${element},`
+      str += `${key}: ${
+        typeof element === 'string' ? `"${element}"` : element
+      },`
     }
   }
 
@@ -73,6 +95,13 @@ export const updateNote = (noteId, updatedAttributes) => {
     mutation {
       updateNote(id: ${noteId}, note: {${str}})
     }
+  `
+}
+export const deleteNote = noteId => {
+  return `
+  mutation {
+    deleteNote(id: ${noteId})
+  }
   `
 }
 

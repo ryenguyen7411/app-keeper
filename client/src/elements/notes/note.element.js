@@ -14,7 +14,8 @@ import {
 import { pin } from 'react-icons-kit/iconic'
 import { handPointerO } from 'react-icons-kit/fa'
 
-import { STATUS_ARCHIVED, STATUS_DELETED } from 'config/constants'
+import { STATUS_ARCHIVED } from 'config/constants'
+import { createNote } from 'config/graphPayload'
 
 function Todo({ todoList, noteId, mode, onChange }) {
   return todoList
@@ -256,7 +257,7 @@ class Note extends React.Component {
   delete = e => {
     e.stopPropagation()
 
-    this.props.onUpdate(this.props.note.id, { status_id: STATUS_DELETED })
+    this.props.onDelete(this.props.note.id)
   }
 
   togglePinned = e => {
@@ -274,8 +275,21 @@ class Note extends React.Component {
   clone = e => {
     e.stopPropagation()
 
+    /** VALIDATE CLONED NOTE - START */
     const note = JSON.parse(JSON.stringify(this.props.note))
     delete note.id
+    note.contents = JSON.stringify(note.contents).replace(/"/g, '\\"')
+
+    note.color_id = note.color ? note.color.id : 1
+    delete note.color
+
+    note.status_id = note.status ? note.status.id : 1
+    delete note.status
+
+    delete note.sort_value
+    delete note.created_at
+    delete note.updated_at
+    /** VALIDATE CLONED NOTE - END */
 
     this.props.onCreateClone(note)
   }
@@ -299,10 +313,7 @@ class Note extends React.Component {
 
     // HOTFIX - USE REPLACE TO MAKE ADAPT QUERY STRING FOR GRAPHQL
     this.props.onUpdate(this.props.note.id, {
-      contents: `"${JSON.stringify(this.props.note.contents).replace(
-        /"/g,
-        '\\"'
-      )}"`
+      contents: JSON.stringify(this.props.note.contents).replace(/"/g, '\\"')
     })
   }
 

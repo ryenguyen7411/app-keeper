@@ -75,13 +75,13 @@ export const colorSchema = {
         apiValidation({ obj, args, context, info }, resolver.createColor)
     },
     updateColor: {
-      type: colorType,
+      type: type.int,
       args: { id: { type: type.INT }, hex: { type: type.STRING } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.updateColor)
     },
     deleteColor: {
-      type: colorType,
+      type: type.int,
       args: { id: { type: type.INT } },
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.deleteColor)

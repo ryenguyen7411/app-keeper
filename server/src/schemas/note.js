@@ -114,13 +114,17 @@ const resolver = {
   /** Mutation */
   createNote: async (obj, args, context, selectionSet) => {
     const note = Object.assign({}, args.note)
-    note.color_id = note.color_id || 0
+    note.color_id = note.color_id || 1
     note.status_id = note.status_id || 1
 
     return await Note.create(note)
   },
   updateNote: async (obj, args, context, selectionSet) => {
     const note = Object.assign({}, args.note)
+    if (note.status_id !== 1) {
+      note.pinned = false
+    }
+
     return await Note.update(note, { where: { id: args.id } })
   },
   deleteNote: async (obj, args, context, selectionSet) => {
@@ -160,7 +164,7 @@ export const noteSchema = {
         apiValidation({ obj, args, context, info }, resolver.updateNote)
     },
     deleteNote: {
-      type: noteType,
+      type: type.int,
       description: 'Delete note',
       args: { id: { type: type.INT } },
       resolve: (obj, args, context, info) =>

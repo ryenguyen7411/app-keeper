@@ -8,16 +8,18 @@ import {
   getNotes,
   createNote,
   updateNote,
+  deleteNote,
   getNoteTags,
   getColors
 } from 'config/graphPayload'
 
-import { STATUS_PUBLIC } from 'config/constants'
+import { STATUS_PUBLIC, STATUS_DELETED } from 'config/constants'
 import Note from 'elements/notes/note.element'
 
 const HomeNote = ({
   onSelect,
   onUpdate,
+  onDelete,
   onCreateClone,
   note,
   tags,
@@ -29,6 +31,7 @@ const HomeNote = ({
       <Note
         onSelect={onSelect}
         onUpdate={onUpdate}
+        onDelete={onDelete}
         onCreateClone={onCreateClone}
         note={note}
         tags={tags}
@@ -73,6 +76,7 @@ class Home extends React.Component {
                 key={index}
                 onSelect={this.selectNote}
                 onUpdate={this.updateNote}
+                onDelete={this.deleteNote}
                 note={note}
                 tags={tags}
                 colors={colors}
@@ -96,6 +100,7 @@ class Home extends React.Component {
                 onCreateClone={this.cloneNote}
                 note={note}
                 tags={tags}
+                colors={colors}
               />
             )
           })}
@@ -124,6 +129,15 @@ class Home extends React.Component {
       updateNote(id, updatedAttributes),
       this.props.noteGraph,
       getNoteQuery
+    )
+  }
+
+  deleteNote = id => {
+    const deleteNoteMutation = deleteNote(id)
+    this.props.noteGraph(
+      updateNote(id, { status_id: STATUS_DELETED }),
+      this.props.noteGraph,
+      deleteNoteMutation
     )
   }
 
