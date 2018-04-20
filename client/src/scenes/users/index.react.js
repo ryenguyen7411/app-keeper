@@ -2,7 +2,10 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { noteGraph } from 'api/note.api'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
+import { noteGraph, moveNote } from 'api/note.api'
 import {
   getNote,
   getNotes,
@@ -22,6 +25,7 @@ const HomeNote = ({
   onUpdate,
   onDelete,
   onCreateClone,
+  onMove,
   isEmpty = false,
   note,
   tags,
@@ -36,6 +40,7 @@ const HomeNote = ({
         onUpdate={onUpdate}
         onDelete={onDelete}
         onCreateClone={onCreateClone}
+        onMove={onMove}
         isEmpty={isEmpty}
         note={note}
         tags={tags}
@@ -109,6 +114,7 @@ class Home extends React.Component {
                 onSelect={this.selectNote}
                 onUpdate={this.updateNote}
                 onCreateClone={this.cloneNote}
+                onMove={this.moveNote}
                 note={note}
                 tags={tags}
                 colors={colors}
@@ -157,6 +163,18 @@ class Home extends React.Component {
   cloneNote = note => {
     this.props.noteGraph(createNote(note))
   }
+
+  moveNote = ({ sourceId, targetId }) => {
+    const ids = this.props.notes.map(note => note.id)
+    const sourceIndex = ids.indexOf(sourceId)
+    const targetIndex = ids.indexOf(targetId)
+
+    this.props.moveNote({
+      sourceId,
+      sourceIndex,
+      targetIndex
+    })
+  }
 }
 
 const mapStateToProps = state => {
@@ -169,10 +187,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      noteGraph
+      noteGraph,
+      moveNote
     },
     dispatch
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+const DnDHome = DragDropContext(HTML5Backend)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(DnDHome)

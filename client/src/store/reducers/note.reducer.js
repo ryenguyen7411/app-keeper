@@ -50,18 +50,24 @@ const handlers = {
       ...action.response.data
     }
   },
-  [`${constants.UPDATE_LOCAL_NOTE}`]: (state, action) => {
-    const { noteId, updatedAttributes } = action.response.data
+  [`${constants.MOVE_NOTE}`]: (state, action) => {
+    const notes = state.notes
+    const { sourceId, sourceIndex, targetIndex } = action.response.data
+
+    if (sourceIndex === state.sourceIndex && targetIndex === state.targetIndex)
+      return state
+
+    const bp1 = sourceIndex < targetIndex ? sourceIndex : targetIndex
+
+    const newNotes = notes
+      .slice(0, bp1)
+      .concat(notes.slice(bp1 + 1), notes.slice(bp1, bp1 + 1))
 
     return {
       ...state,
-      notes: {
-        ...state.notes,
-        [noteId]: {
-          ...state.notes[noteId],
-          ...updatedAttributes
-        }
-      }
+      notes: newNotes,
+      sourceIndex,
+      targetIndex
     }
   }
 }

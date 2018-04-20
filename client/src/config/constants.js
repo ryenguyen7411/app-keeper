@@ -1,6 +1,6 @@
 /** DISPATCH */
 export const NOTE_GRAPH = 'NOTE_GRAPH'
-export const UPDATE_LOCAL_NOTE = 'UPDATE_LOCAL_NOTE'
+export const MOVE_NOTE = 'MOVE_NOTE'
 
 /** XML HTTP REQUEST STATE */
 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState

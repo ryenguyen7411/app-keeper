@@ -3,6 +3,8 @@ import $ from 'jquery'
 import 'bootstrap'
 import _ from 'lodash'
 
+import { DragSource, DropTarget } from 'react-dnd'
+
 import Icon from 'react-icons-kit'
 import {
   ic_done,
@@ -16,6 +18,41 @@ import { handPointerO } from 'react-icons-kit/fa'
 
 import { STATUS_ARCHIVED } from 'config/constants'
 import { createNote } from 'config/graphPayload'
+
+/** Drag and Drop */
+const noteSource = {
+  beginDrag(props) {
+    return {
+      noteId: props.note.id
+    }
+  }
+}
+
+const noteTarget = {
+  hover(targetProps, monitor) {
+    const targetId = targetProps.note.id
+    const sourceProps = monitor.getItem()
+    const sourceId = sourceProps.noteId
+
+    if (sourceId !== targetId) {
+      targetProps.onMove({ sourceId, targetId })
+    }
+  }
+}
+
+function collectSource(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+function collectTarget(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  }
+}
 
 function Todo({ todoList, noteId, mode, onChange }) {
   return todoList
@@ -91,123 +128,137 @@ class Note extends React.Component {
     }
   }
   render() {
-    const { note, tags, colors = [] } = this.props
+    const {
+      connectDragSource,
+      connectDropTarget,
+      isDragging,
+      isOver,
+      onMove,
+      note,
+      tags,
+      colors = []
+    } = this.props
 
-    return (
-      <div
-        className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
-        style={{ backgroundColor: note.color.hex }}
-        onMouseEnter={this.hover}
-        onMouseLeave={this.unhover}
-        onClick={this.select}
-        onBlur={this.deselect}
-        tabIndex={0}>
-        <div className="card-body">
-          <h6 className="card-title">{note.title}</h6>
-          <Todo
-            todoList={note.contents}
-            noteId={note.id}
-            mode={note.mode}
-            onChange={this.updateContents}
-          />
+    return connectDragSource(
+      connectDropTarget(
+        <div
+          className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
+          style={{
+            backgroundColor: note.color.hex,
+            opacity: isDragging ? 0 : 1
+          }}
+          onMouseEnter={this.hover}
+          onMouseLeave={this.unhover}
+          onClick={this.select}
+          onBlur={this.deselect}
+          tabIndex={0}>
+          <div className="card-body">
+            <h6 className="card-title">{note.title}</h6>
+            <Todo
+              todoList={note.contents}
+              noteId={note.id}
+              mode={note.mode}
+              onChange={this.updateContents}
+            />
 
-          <div className="tags">
-            {tags.map(tag => (
-              <span
-                key={`tag-${note.id}-${tag.id}`}
-                className="badge mr-1"
-                style={{ backgroundColor: 'rgba(0,0,0,.1)' }}>
-                {tag.title}
-              </span>
-            ))}
-          </div>
+            <div className="tags">
+              {tags.map(tag => (
+                <span
+                  key={`tag-${note.id}-${tag.id}`}
+                  className="badge mr-1"
+                  style={{ backgroundColor: 'rgba(0,0,0,.1)' }}>
+                  {tag.title}
+                </span>
+              ))}
+            </div>
 
-          <div
-            key={`note-${note.id}-toolbox`}
-            className={`toolbox ${
-              this.state.isHovered ? 'visible' : 'invisible'
-            }`}>
-            <Icon icon={handPointerO} size={20} className="toolbox-icon" />
+            <div
+              key={`note-${note.id}-toolbox`}
+              className={`toolbox ${
+                this.state.isHovered ? 'visible' : 'invisible'
+              }`}>
+              <Icon icon={handPointerO} size={20} className="toolbox-icon" />
 
-            {/* Icon Color palette */}
-            <span>
-              <Icon
-                icon={ic_color_lens}
-                size={20}
-                id={`toolbox-icon-color-${note.id}`}
-                className="toolbox-icon"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                onMouseEnter={this.showColorPalette}
-                onClick={e => e.stopPropagation()}
-              />
-              <div
-                className="dropdown-menu"
-                aria-labelledby={`toolbox-icon-color-${note.id}`}
-                style={{ width: '160px' }}>
-                <ColorPalette
-                  colors={colors}
-                  current={note.color.id}
-                  onChangeColor={this.changeColor}
+              {/* Icon Color palette */}
+              <span>
+                <Icon
+                  icon={ic_color_lens}
+                  size={20}
+                  id={`toolbox-icon-color-${note.id}`}
+                  className="toolbox-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  onMouseEnter={this.showColorPalette}
+                  onClick={e => e.stopPropagation()}
                 />
-              </div>
-            </span>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby={`toolbox-icon-color-${note.id}`}
+                  style={{ width: '160px' }}>
+                  <ColorPalette
+                    colors={colors}
+                    current={note.color.id}
+                    onChangeColor={this.changeColor}
+                  />
+                </div>
+              </span>
 
-            <Icon icon={ic_image} size={20} className="toolbox-icon" />
-            <Icon
-              icon={ic_archive}
-              size={20}
-              className="toolbox-icon"
-              onClick={this.archive}
-            />
-
-            {/* Icon More options */}
-            <span>
+              <Icon icon={ic_image} size={20} className="toolbox-icon" />
               <Icon
-                icon={ic_more_vert}
+                icon={ic_archive}
                 size={20}
-                id={`toolbox-icon-dropdown-${note.id}`}
                 className="toolbox-icon"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                onClick={e => e.stopPropagation()}
+                onClick={this.archive}
               />
-              <div
-                className="dropdown-menu"
-                aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
-                <div className="dropdown-item" onClick={this.delete}>
-                  Xóa ghi chú
-                </div>
-                <div className="dropdown-item">Thay đổi nhãn</div>
-                <div className="dropdown-item" onClick={this.clone}>
-                  Tạo bản sao
-                </div>
-                <div className="dropdown-item" onClick={this.changeMode}>
-                  {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
-                </div>
-              </div>
-            </span>
 
-            {!this.state.isSelected && (
+              {/* Icon More options */}
+              <span>
+                <Icon
+                  icon={ic_more_vert}
+                  size={20}
+                  id={`toolbox-icon-dropdown-${note.id}`}
+                  className="toolbox-icon"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  onClick={e => e.stopPropagation()}
+                />
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
+                  <div className="dropdown-item" onClick={this.delete}>
+                    Xóa ghi chú
+                  </div>
+                  <div className="dropdown-item">Thay đổi nhãn</div>
+                  <div className="dropdown-item" onClick={this.clone}>
+                    Tạo bản sao
+                  </div>
+                  <div className="dropdown-item" onClick={this.changeMode}>
+                    {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
+                  </div>
+                </div>
+              </span>
+
+              {!this.state.isSelected && (
+                <Icon
+                  icon={ic_done}
+                  size={16}
+                  className="toolbox-icon icon-checkbox"
+                />
+              )}
               <Icon
-                icon={ic_done}
+                icon={pin}
                 size={16}
-                className="toolbox-icon icon-checkbox"
+                className={`toolbox-icon icon-pinned ${
+                  note.pinned === true ? 'visible' : ''
+                }`}
+                onClick={this.togglePinned}
               />
-            )}
-            <Icon
-              icon={pin}
-              size={16}
-              className={`toolbox-icon icon-pinned ${
-                note.pinned === true ? 'visible' : ''
-              }`}
-              onClick={this.togglePinned}
-            />
+            </div>
           </div>
         </div>
-      </div>
+      )
     )
   }
 
@@ -322,4 +373,6 @@ class Note extends React.Component {
   /** TOOLBOX ACTION - END */
 }
 
-export default Note
+export default DragSource('Note', noteSource, collectSource)(
+  DropTarget('Note', noteTarget, collectTarget)(Note)
+)

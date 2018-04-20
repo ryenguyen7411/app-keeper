@@ -28,13 +28,13 @@ export function noteGraphError(data) {
 }
 /** NOTE GRAPH - END */
 
-/** UPDATE LOCAL NOTE - START */
-export function updateLocalNoteSuccess(data) {
+/** MOVE NOTE - START */
+export function moveNote(data) {
   return dispatch => {
     dispatch({
-      type: `${constants.UPDATE_LOCAL_NOTE}`,
+      type: `${constants.MOVE_NOTE}`,
       response: data
     })
   }
 }
-/** UPDATE LOCAL NOTE - END */
+/** MOVE NOTE - END */

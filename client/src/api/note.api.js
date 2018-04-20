@@ -29,8 +29,8 @@ export function noteGraph(payload, ...callback) {
   }
 }
 
-export function updateLocalNote(noteId, updatedAttributes) {
+export function moveNote({ sourceId, sourceIndex, targetIndex }) {
   return dispatch => {
-    dispatch(actions.updateLocalNote({ noteId, updatedAttributes }))
+    dispatch(actions.moveNote({ data: { sourceId, sourceIndex, targetIndex } }))
   }
 }
