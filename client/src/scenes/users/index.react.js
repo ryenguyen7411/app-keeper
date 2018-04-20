@@ -108,7 +108,7 @@ class Home extends React.Component {
       } else if (hash === CurrentHash.ARCHIVED) {
         return sourceNotes.filter(note => note.status.id === STATUS_ARCHIVED)
       } else if (hash === CurrentHash.DELETED) {
-        //
+        return sourceNotes.filter(note => note.status.id === STATUS_DELETED)
       } else if (hash === CurrentHash.SEARCH) {
         //
       } else if (hash === CurrentHash.REMINDER) {

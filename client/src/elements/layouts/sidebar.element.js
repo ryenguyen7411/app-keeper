@@ -2,16 +2,22 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import Icon from 'react-icons-kit'
-import { ic_menu } from 'react-icons-kit/md'
+import {
+  ic_archive,
+  ic_delete,
+  ic_settings,
+  ic_highlight
+} from 'react-icons-kit/md'
+import { handPointerO } from 'react-icons-kit/fa'
 
 const Sidebar = ({ className }) => (
   <div className={`sidebar ${className}`}>
     <Link className="sidebar-item" to="#notes">
-      <Icon size={24} icon={ic_menu} />
+      <Icon size={24} icon={ic_highlight} />
       Ghi chú
     </Link>
     <div className="sidebar-item">
-      <Icon size={24} icon={ic_menu} />
+      <Icon size={24} icon={handPointerO} />
       Lời nhắc
     </div>
 
@@ -25,18 +31,18 @@ const Sidebar = ({ className }) => (
     <div className="separator" />
 
     <Link className="sidebar-item" to="#archived">
-      <Icon size={24} icon={ic_menu} />
+      <Icon size={24} icon={ic_archive} />
       Lưu trữ
     </Link>
-    <div className="sidebar-item">
-      <Icon size={24} icon={ic_menu} />
+    <Link className="sidebar-item" to="#deleted">
+      <Icon size={24} icon={ic_delete} />
       Thùng rác
-    </div>
+    </Link>
 
     <div className="separator" />
 
     <div className="sidebar-item">
-      <Icon size={24} icon={ic_menu} />
+      <Icon size={24} icon={ic_settings} />
       Cài đặt
     </div>
   </div>

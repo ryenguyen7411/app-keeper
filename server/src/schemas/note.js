@@ -96,6 +96,7 @@ const resolver = {
       limit: args.limit,
       offset: args.offset,
       attributes: selectionSet.root,
+      paranoid: false,
       include: [
         {
           model: Color,
