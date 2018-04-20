@@ -1,0 +1,136 @@
+.topbar {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 64px;
+    background: $primary;
+    z-index: 999;
+    .menu-icon {
+        margin: 0.7rem;
+        padding: 0.7rem;
+        border-radius: 50%;
+        &:hover {
+            background: rgba(lighten($dark, 20%), 0.3);
+        }
+    }
+    .branding {
+        font-size: 1.4rem;
+    }
+    .searchbox {
+        flex: 1;
+        padding: 0 2rem;
+    }
+    .toolbox {
+        &-icon {
+            padding: 0.4rem;
+            color: $dark;
+            &:hover {
+                color: darken($dark, 15%);
+            }
+        }
+    }
+}
+
+.sidebar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    margin-top: 64px;
+    margin-left: -220px;
+    padding: 0 4px;
+    width: 220px;
+    height: calc(100vh - 64px);
+    transition: $transition;
+    &.expanded {
+        margin-left: 0;
+        +.main {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+        }
+    }
+    &-item {
+        display: flex;
+        align-items: center;
+        color: $dark;
+        transition: $transition;
+        &:not(.control) {
+            flex-basis: 50px;
+            &:hover {
+                background: rgba(lighten($dark, 20%), 0.3);
+                color: inherit;
+                text-decoration: none;
+            }
+        }
+        &.control {
+            padding: 0.8rem 0;
+        }
+        svg {
+            width: 4rem;
+        }
+    }
+    .separator {
+        margin: 0.5rem 0;
+        height: 0;
+        border-bottom: 1px solid darken($light, 10%);
+    }
+}
+
+.main {
+    padding-top: 64px;
+    width: 100%;
+    transition: $transition;
+}
+
+.nav {
+    &-btn-expand {
+        position: relative;
+        width: 2.4rem;
+        height: 20px;
+        >span {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: $light;
+            border-radius: 0.8rem;
+            transition: $transition;
+            &:nth-child(1) {
+                top: 0;
+            }
+            &:nth-child(2) {
+                top: 9px;
+            }
+            &:nth-child(3) {
+                top: 18px;
+            }
+        }
+        &.selected {
+            >span {
+                &:nth-child(1) {
+                    width: 60%;
+                    top: 15px;
+                    right: -1px;
+                    transform: rotateZ(-45deg);
+                }
+                &:nth-child(3) {
+                    width: 60%;
+                    top: 3px;
+                    right: -1px;
+                    transform: rotateZ(45deg);
+                }
+            }
+            &.expanded {
+                >span {
+                    &:nth-child(1) {
+                        left: -1px;
+                        transform: rotateZ(45deg);
+                    }
+                    &:nth-child(3) {
+                        left: -1px;
+                        transform: rotateZ(-45deg);
+                    }
+                }
+            }
+        }
+    }
+}

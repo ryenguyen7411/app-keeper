@@ -1,0 +1,10 @@
+# Ignore auto-generated
+node_modules
+
+# Ignore file/folder not necessary inc container
+# !!! DO NOT PUT ESLINT INTO THIS FILE.
+# !!! BECAUSE ESLINT IS INTEGRATED WITHIN THIS PROJECT.
+.git*
+.prettier*
+jsconfig.json
+README.md

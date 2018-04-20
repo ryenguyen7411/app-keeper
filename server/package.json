@@ -1,0 +1,44 @@
+{
+  "name": "mint_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Rye <ryenguyen7411@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon ./bin/www --exec babel-node -e js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "build:prod": "./node_modules/.bin/webpack -p",
+    "watch": "./node_modules/.bin/webpack --watch"
+  },
+  "dependencies": {
+    "auto-import-preloader": "^0.1.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "encodings": "^1.0.0",
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.11",
+    "express-session": "^1.15.6",
+    "faker": "^4.1.0",
+    "graphql": "^0.12.3",
+    "graphql-fields": "^1.0.2",
+    "lodash": "^4.17.5",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.32.1",
+    "sequelize-cli": "^4.0.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.14.11",
+    "webpack": "^4.2.0"
+  },
+  "babel": {
+    "presets": ["env"]
+  }
+}

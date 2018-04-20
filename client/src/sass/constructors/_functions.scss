@@ -1,0 +1,52 @@
+// Color contrast
+@function yiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+    $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+    @if ($yiq >=$yiq-contrasted-threshold) {
+        @return $yiq-text-dark;
+    }
+    @else {
+        @return $yiq-text-light;
+    }
+}
+
+/// Computes a top-shadow for a card effect.
+/// @param {Number} $depth - depth level
+/// @return {List}
+@function top-shadow($depth) {
+    $primary-offset: nth(1.5 3 10 14 19, $depth) * 1px;
+    $blur: nth(1.5 3 10 14 19, $depth) * 4px;
+    $color: rgba(black, nth(.12 .16 .19 .25 .30, $depth));
+    @return 0 $primary-offset $blur $color;
+}
+
+/// Computes a bottom-shadow for a card effect.
+/// @param {Number} $depth - depth level
+/// @return {List}
+@function bottom-shadow($depth) {
+    $primary-offset: nth(1.5 3 6 10 15, $depth) * 1px;
+    $blur: nth(1 3 3 5 6, $depth) * 4px;
+    $color: rgba(black, nth(.24 .23 .23 .22 .22, $depth));
+    @return 0 $primary-offset $blur $color;
+}
+
+@mixin card($depth: 1, $hover: true) {
+    @if $depth < 1 {
+        box-shadow: none;
+    }
+    @else if $depth>4 {
+        @warn "Invalid $depth `#{$depth}` for mixin `card`.";
+    }
+    @else {
+        background: white;
+        box-shadow: bottom-shadow($depth), top-shadow($depth);
+        transition: all .2s;
+        @if $hover==true {
+            &:hover {
+                box-shadow: bottom-shadow($depth + 1), top-shadow($depth + 1);
+            }
+        }
+    }
+}

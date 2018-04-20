@@ -1,0 +1,118 @@
+.note {
+    @include card();
+    background: $white;
+    transition: $transition-long;
+    &.fullscreen {
+        @include card($depth: 2, $hover: false);
+        position: fixed;
+        left: 50%;
+        top: 30%;
+        width: 560px;
+        max-width: 100%;
+        z-index: 1000;
+        transform: translateX(-50%);
+        transition: $transition-long;
+    }
+    .icon {
+        &-select {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: $white;
+        }
+        &-pin {}
+    }
+    .toolbox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: $transition-long;
+        &-icon {
+            padding: 0.4rem;
+            color: $dark;
+            &:hover {
+                color: darken($dark, 15%);
+            }
+            &.icon {
+                &-checkbox {
+                    position: absolute;
+                    top: -8px;
+                    left: -8px;
+                    border-radius: 50%;
+                    background: $white;
+                    @include card($hover: false);
+                }
+                &-pinned {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    &.visible {
+                        color: $primary;
+                    }
+                }
+            }
+        }
+    }
+    .color-palette {
+        margin: 0;
+        &-element {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 4px auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+.modal {
+    &-tags {
+        .tag-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 48px;
+            &-input {
+                all: inherit;
+                flex: 1;
+                &:focus {
+                    border-bottom: 1px solid darken($light, 20%);
+                }
+            }
+            .icon {
+                &-delete,
+                &-edit {
+                    color: $dark;
+                    &:hover {
+                        color: darken($dark, 20%);
+                    }
+                }
+            }
+            svg {
+                width: 4rem;
+            }
+        }
+    }
+    &-dialog {
+        max-width: 320px;
+    }
+    &.init-show {
+        position: relative !important;
+        display: block !important;
+        z-index: 0;
+        &.show {
+            z-index: 10000;
+        }
+    }
+}
