@@ -105,6 +105,16 @@ export const deleteNote = noteId => {
   `
 }
 
+/** TAG - GRAPH QUERY */
+export const getTags = () => `
+{
+  tags {
+    id
+    title
+  }
+}
+`
+
 /** NOTE TAG - GRAPH QUERY */
 export const getNoteTags = () => `
 {

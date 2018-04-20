@@ -8,12 +8,9 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import { noteGraph, moveNote } from 'api/note.api'
 import {
   getNote,
-  getNotes,
   createNote,
   updateNote,
-  deleteNote,
-  getNoteTags,
-  getColors
+  deleteNote
 } from 'config/graphPayload'
 
 import {
@@ -73,11 +70,7 @@ class Home extends React.Component {
       isInitialized: false
     }
   }
-  componentDidMount() {
-    this.props.noteGraph(getNotes())
-    this.props.noteGraph(getNoteTags())
-    this.props.noteGraph(getColors())
-  }
+  componentDidMount() {}
 
   componentWillReceiveProps(props) {
     /** FILTER NOTE BASE ON CURRENT HASH */
