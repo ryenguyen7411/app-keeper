@@ -291,23 +291,24 @@ class Note extends React.Component {
   updateContents = (e, id, isChecked) => {
     e.stopPropagation()
 
-    console.log('UPDATE CONTENTS', id, isChecked)
     const targetTodo = _.find(
       this.props.note.contents,
       (n, index) => index === id
     )
     targetTodo.isChecked = isChecked
 
+    // HOTFIX - USE REPLACE TO MAKE ADAPT QUERY STRING FOR GRAPHQL
     this.props.onUpdate(this.props.note.id, {
-      contents: this.props.note.contents
+      contents: `"${JSON.stringify(this.props.note.contents).replace(
+        /"/g,
+        '\\"'
+      )}"`
     })
   }
 
   // remind
 
   /** TOOLBOX ACTION - END */
-
-  showColorPalette = e => {}
 }
 
 export default Note

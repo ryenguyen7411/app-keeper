@@ -15,13 +15,17 @@ export function noteGraph(payload, ...callback) {
       data: {
         query: payload
       }
-    }).then(response => {
-      if (response.status === constants.STATUS_OK)
-        dispatch(
-          actions.noteGraphSuccess({ ...response.data, callback: callback })
-        )
-      else dispatch(actions.noteGraphError(response.error))
     })
+      .then(response => {
+        if (response.status === constants.STATUS_OK)
+          dispatch(
+            actions.noteGraphSuccess({ ...response.data, callback: callback })
+          )
+        else dispatch(actions.noteGraphError(response.error))
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 
