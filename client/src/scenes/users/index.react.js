@@ -143,6 +143,8 @@ class Home extends React.Component {
   createNote = (id, updateAttributes) => {}
 
   updateNote = (id, updatedAttributes) => {
+    console.log('PINNED', id, updatedAttributes)
+
     const getNoteQuery = getNote(id)
     this.props.noteGraph(
       updateNote(id, updatedAttributes),

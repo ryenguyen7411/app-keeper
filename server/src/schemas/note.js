@@ -121,7 +121,7 @@ const resolver = {
   },
   updateNote: async (obj, args, context, selectionSet) => {
     const note = Object.assign({}, args.note)
-    if (note.status_id !== 1) {
+    if (note.status_id && note.status_id !== 1) {
       note.pinned = false
     }
 

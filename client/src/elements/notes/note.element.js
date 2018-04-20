@@ -349,7 +349,7 @@ class Note extends React.Component {
     e.stopPropagation()
 
     this.props.onUpdate(this.props.note.id, {
-      mode: this.props.note.mode !== 'check' ? '"check"' : '"text"'
+      mode: this.props.note.mode !== 'check' ? 'check' : 'text'
     })
   }
 
