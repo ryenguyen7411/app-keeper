@@ -6,14 +6,22 @@ import { noteGraph } from 'api/note.api'
 import {
   getNote,
   getNotes,
-  getNoteTags,
   createNote,
-  updateNote
+  updateNote,
+  getNoteTags,
+  getColors
 } from 'config/graphPayload'
 
 import Note from 'elements/notes/note.element'
 
-const HomeNote = ({ onSelect, onUpdate, onCreateClone, note, tags }) => {
+const HomeNote = ({
+  onSelect,
+  onUpdate,
+  onCreateClone,
+  note,
+  tags,
+  colors
+}) => {
   // console.log('HOME note', onCreateClone, note)
   return (
     <div className="col-sm-6 col-md-4 col-lg-3">
@@ -23,6 +31,7 @@ const HomeNote = ({ onSelect, onUpdate, onCreateClone, note, tags }) => {
         onCreateClone={onCreateClone}
         note={note}
         tags={tags}
+        colors={colors}
       />
     </div>
   )
@@ -38,11 +47,13 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.noteGraph(getNotes())
     this.props.noteGraph(getNoteTags())
+    this.props.noteGraph(getColors())
   }
   render() {
-    console.log('TRIGGER RENDER')
     const pinnedNote = this.props.notes.filter(note => note.pinned === true)
     const unPinnedNote = this.props.notes.filter(note => note.pinned !== true)
+
+    const { colors } = this.props
 
     return [
       <div key="pinned">
@@ -59,6 +70,7 @@ class Home extends React.Component {
                 onUpdate={this.updateNote}
                 note={note}
                 tags={tags}
+                colors={colors}
               />
             )
           })}
@@ -118,7 +130,8 @@ class Home extends React.Component {
 const mapStateToProps = state => {
   return {
     notes: state.noteReducer.notes,
-    noteTags: state.noteReducer.noteTags
+    noteTags: state.noteReducer.noteTags,
+    colors: state.noteReducer.colors
   }
 }
 const mapDispatchToProps = dispatch => {

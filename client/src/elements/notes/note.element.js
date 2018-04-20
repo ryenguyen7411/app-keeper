@@ -36,10 +36,17 @@ function TodoItem({ className, todo, mode }) {
   )
 }
 
-function ColorPalette() {
+function ColorPalette({ colors }) {
   return (
-    <div className="row color-palette">
-      
+    <div className="row gutters-4 color-palette">
+      {colors.map(color => (
+        <div key={`color-${color.hex}`} className="col-3">
+          <div
+            className="color-palette-element"
+            style={{ backgroundColor: color.hex }}
+          />
+        </div>
+      ))}
     </div>
   )
 }
@@ -55,7 +62,7 @@ class Note extends React.Component {
     }
   }
   render() {
-    const { note, tags } = this.props
+    const { note, tags, colors = [] } = this.props
 
     return (
       <div
@@ -92,7 +99,26 @@ class Note extends React.Component {
               this.state.isHovered ? 'visible' : 'invisible'
             }`}>
             <Icon icon={handPointerO} size={20} className="toolbox-icon" />
-            <Icon icon={ic_color_lens} size={20} className="toolbox-icon" />
+
+            <span>
+              <Icon
+                icon={ic_color_lens}
+                size={20}
+                id={`toolbox-icon-color-${note.id}`}
+                className="toolbox-icon"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={e => e.stopPropagation()}
+              />
+              <div
+                className="dropdown-menu"
+                aria-labelledby={`toolbox-icon-color-${note.id}`}
+                style={{ width: '160px' }}>
+                <ColorPalette colors={colors} />
+              </div>
+            </span>
+
             <Icon icon={ic_image} size={20} className="toolbox-icon" />
             <Icon
               icon={ic_archive}

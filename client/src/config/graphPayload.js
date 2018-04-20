@@ -1,3 +1,4 @@
+/** NOTE - GRAPH QUERY & MUTATION */
 export const getNote = noteId => `
 {
   note (id: ${noteId}) {
@@ -32,18 +33,6 @@ export const getNotes = () => `
   }
 }
 `
-export const getNoteTags = () => `
-{
-  noteTags {
-    id
-    note_id
-    tag {
-      id
-      title
-    }
-  }
-}
-`
 export const createNote = note => {
   let str = ''
   for (const key in note) {
@@ -74,3 +63,27 @@ export const updateNote = (noteId, updatedAttributes) => {
     }
   `
 }
+
+/** NOTE TAG - GRAPH QUERY */
+export const getNoteTags = () => `
+{
+  noteTags {
+    id
+    note_id
+    tag {
+      id
+      title
+    }
+  }
+}
+`
+
+/** COLOR - GRAPH QUERY */
+export const getColors = () => `
+{
+  colors {
+    id
+    hex
+  }
+}
+`

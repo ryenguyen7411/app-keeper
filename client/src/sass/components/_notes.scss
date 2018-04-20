@@ -1,64 +1,69 @@
 .note {
-  @include card();
-  background: $white;
-  transition: $transition;
-  &.fullscreen {
-    @include card($depth: 2, $hover: false);
-    position: fixed;
-    width: 560px;
-    max-width: 100%;
-    z-index: 1000;
-    transform: translateX(100% - 50%);
-  }
-  .icon {
-    &-select {
-      padding: 0.5rem;
-      border-radius: 50%;
-      background: $white;
-    }
-    &-pin {
-    }
-  }
-  .toolbox {
-    opacity: 0;
+    @include card();
+    background: $white;
     transition: $transition;
-    &.visible {
-      opacity: 1;
+    &.fullscreen {
+        @include card($depth: 2, $hover: false);
+        position: fixed;
+        width: 560px;
+        max-width: 100%;
+        z-index: 1000;
+        transform: translateX(100% - 50%);
     }
-    &-icon {
-      padding: 0.4rem;
-      color: $dark;
-      &:hover {
-        color: darken($dark, 15%);
-      }
-      &.icon {
-        &-checkbox {
-          position: absolute;
-          top: -8px;
-          left: -8px;
-          border-radius: 50%;
-          background: $white;
-          @include card($hover: false);
+    .icon {
+        &-select {
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: $white;
         }
-        &-pinned {
-          position: absolute;
-          top: 0;
-          right: 0;
+        &-pin {}
+    }
+    .toolbox {
+        opacity: 0;
+        transition: $transition;
+        &.visible {
+            opacity: 1;
         }
-      }
+        &-icon {
+            padding: 0.4rem;
+            color: $dark;
+            &:hover {
+                color: darken($dark, 15%);
+            }
+            &.icon {
+                &-checkbox {
+                    position: absolute;
+                    top: -8px;
+                    left: -8px;
+                    border-radius: 50%;
+                    background: $white;
+                    @include card($hover: false);
+                }
+                &-pinned {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
     }
     .color-palette {
-
+        margin: 0;
+        &-element {
+            margin: 4px auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
     }
-  }
 }
 
 .overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
 }

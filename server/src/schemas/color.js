@@ -24,6 +24,7 @@ export const colorType = type.object({
 
 /** Resolver */
 const resolver = {
+  /** QUERY */
   color: async (obj, args, context, selectionSet) => {
     return await Color.findOne({
       where: { id: args.id },
@@ -36,6 +37,17 @@ const resolver = {
       offset: args.offset,
       attributes: selectionSet.root
     })
+  },
+
+  /** MUTATION */
+  createColor: async (obj, args, context, selectionSet) => {
+    return await Color.create({ hex: args.hex })
+  },
+  updateColor: async (obj, args, context, selectionSet) => {
+    return await Color.update({ hex: args.hex }, { where: { id: args.id } })
+  },
+  deleteColor: async (obj, args, context, selectionSet) => {
+    return await Color.destroy({ where: { id: args.id } })
   }
 }
 
@@ -54,6 +66,26 @@ export const colorSchema = {
       resolve: (obj, args, context, info) =>
         apiValidation({ obj, args, context, info }, resolver.colors)
     }
+  },
+  mutation: {
+    createColor: {
+      type: colorType,
+      args: { hex: { type: type.STRING } },
+      resolve: (obj, args, context, info) =>
+        apiValidation({ obj, args, context, info }, resolver.createColor)
+    },
+    updateColor: {
+      type: colorType,
+      args: { id: { type: type.INT }, hex: { type: type.STRING } },
+      resolve: (obj, args, context, info) =>
+        apiValidation({ obj, args, context, info }, resolver.updateColor)
+    },
+    deleteColor: {
+      type: colorType,
+      args: { id: { type: type.INT } },
+      resolve: (obj, args, context, info) =>
+        apiValidation({ obj, args, context, info }, resolver.deleteColor)
+    }
   }
 }
 
@@ -63,6 +95,14 @@ const schema = type.schema({
     fields: {
       color: colorSchema.query.color,
       colors: colorSchema.query.colors
+    }
+  }),
+  mutation: type.object({
+    name: 'TagMutation',
+    fields: {
+      createColor: colorSchema.mutation.createColor,
+      updateColor: colorSchema.mutation.updateColor,
+      deleteColor: colorSchema.mutation.deleteColor
     }
   })
 })

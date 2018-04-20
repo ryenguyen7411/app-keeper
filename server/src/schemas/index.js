@@ -40,7 +40,11 @@ const schema = type.schema({
       deleteNote: noteSchema.mutation.deleteNote,
 
       createNoteTag: noteTagSchema.mutation.createNoteTag,
-      deleteNoteTag: noteTagSchema.mutation.deleteNoteTag
+      deleteNoteTag: noteTagSchema.mutation.deleteNoteTag,
+
+      createColor: colorSchema.mutation.createColor,
+      updateColor: colorSchema.mutation.updateColor,
+      deleteColor: colorSchema.mutation.deleteColor
     }
   })
 })
