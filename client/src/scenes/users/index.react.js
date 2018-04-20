@@ -43,6 +43,7 @@ const HomeNote = ({
   tags,
   colors
 }) => {
+  console.log(onCreateClone)
   return (
     <div className="col-md-6 col-lg-4 col-xl-3 my-1">
       <Note
@@ -83,8 +84,6 @@ class Home extends React.Component {
     }
 
     if (!props.notes || !props.noteTags) return
-
-    console.log('blababla')
 
     const sourceNotes = props.notes
     const sourceNoteTags = props.noteTags
@@ -140,16 +139,16 @@ class Home extends React.Component {
     const unPinnedNote = notes.filter(note => note.pinned !== true)
 
     return [
-      (this.state.currentHash === '' ||
-        this.state.currentHash === CurrentHash.NOTES) && (
-        <HomeNote
-          key="new"
-          onSelect={this.selectNote}
-          onCreate={this.createNote}
-          isEmpty={true}
-          colors={colors}
-        />
-      ),
+      // (this.state.currentHash === '' ||
+      //   this.state.currentHash === CurrentHash.NOTES) && (
+      //   <HomeNote
+      //     key="new"
+      //     onSelect={this.selectNote}
+      //     onCreate={this.createNote}
+      //     isEmpty={true}
+      //     colors={colors}
+      //   />
+      // ),
       !!pinnedNote.length && (
         <div key="pinned">
           <p className="mb-0 mt-2">Được ghim</p>
@@ -162,6 +161,7 @@ class Home extends React.Component {
                   onSelect={this.selectNote}
                   onUpdate={this.updateNote}
                   onDelete={this.deleteNote}
+                  onCreateClone={this.cloneNote}
                   note={note}
                   tags={tags}
                   colors={colors}
@@ -181,6 +181,7 @@ class Home extends React.Component {
                 key={index}
                 onSelect={this.selectNote}
                 onUpdate={this.updateNote}
+                onDelete={this.deleteNote}
                 onCreateClone={this.cloneNote}
                 onMove={this.moveNote}
                 note={note}

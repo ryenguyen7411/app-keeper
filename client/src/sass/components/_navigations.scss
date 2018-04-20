@@ -59,6 +59,7 @@
         align-items: center;
         color: $dark;
         transition: $transition;
+        cursor: pointer;
         &:not(.control) {
             height: 50px;
             &:hover {

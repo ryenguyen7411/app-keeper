@@ -29,7 +29,7 @@ const Sidebar = ({ className, tags = [] }) => {
       <div className="sidebar-item control j-between">
         <span>Nhãn</span>
         <span
-          className="text-uppercase font-weight-bold"
+          className="text-uppercase font-weight-bold c-pointer"
           data-toggle="modal"
           data-target="#tag-modal">
           Chỉnh sửa

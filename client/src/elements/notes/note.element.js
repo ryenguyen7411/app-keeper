@@ -144,23 +144,6 @@ class Note extends React.Component {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isEmpty) {
-      return
-    }
-
-    const state = this.state
-    const noteId = this.props.note.id
-    const deselect = this.deselect
-
-    // this.addEventListener('click', function(e) {
-    //   console.log('TRIGGER')
-    //   if (state.isSelected && e.target.id !== `note-${noteId}`) {
-    //     deselect()
-    //   }
-    // })
-  }
-
   render() {
     const {
       connectDragSource,
