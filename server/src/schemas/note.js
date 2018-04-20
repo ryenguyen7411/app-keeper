@@ -8,21 +8,11 @@ import apiValidation from '../services/api'
 
 /** Import from db and schema */
 import models from '../../db/models'
+import { colorType } from './color'
 
 const { Note, Color, Tag, Image, Status, Sequelize } = models
 
 /** Definition of model type */
-const colorType = type.object({
-  name: 'Color',
-  fields: {
-    id: { type: type.ID },
-    hex: { type: type.string },
-    deleted_at: { type: type.string },
-    created_at: { type: type.string },
-    updated_at: { type: type.string }
-  }
-})
-
 const imageType = type.object({
   name: 'Image',
   fields: {

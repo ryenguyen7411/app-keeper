@@ -36,13 +36,22 @@ function TodoItem({ className, todo, mode }) {
   )
 }
 
+function ColorPalette() {
+  return (
+    <div className="row color-palette">
+      
+    </div>
+  )
+}
+
 class Note extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       isHovered: false,
-      isSelected: false
+      isSelected: false,
+      isShowColorPalette: false
     }
   }
   render() {
@@ -194,7 +203,10 @@ class Note extends React.Component {
     this.props.onUpdate(this.props.note.id, { pinned: !this.props.note.pinned })
   }
 
-  // color
+  changeColor = e => {
+    e.stopPropagation()
+  }
+
   // tag
 
   clone = e => {

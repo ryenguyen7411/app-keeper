@@ -8,6 +8,7 @@ import { maskErrors } from '../graphQLError'
 import { tagSchema } from './tag'
 import { noteSchema } from './note'
 import { noteTagSchema } from './note_tag'
+import { colorSchema } from './color'
 
 /** Schema */
 const schema = type.schema({
@@ -21,7 +22,10 @@ const schema = type.schema({
       notes: noteSchema.query.notes,
 
       noteTag: noteTagSchema.query.noteTag,
-      noteTags: noteTagSchema.query.noteTags
+      noteTags: noteTagSchema.query.noteTags,
+
+      color: colorSchema.query.color,
+      colors: colorSchema.query.colors
     }
   }),
   mutation: type.object({
