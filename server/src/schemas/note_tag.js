@@ -17,7 +17,7 @@ const { NoteTag, Note, Tag, Sequelize } = models
 export const noteTagType = type.object({
   name: 'NoteTag',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     note_id: { type: type.int },
     note: { type: noteType },
     tag_id: { type: type.int },

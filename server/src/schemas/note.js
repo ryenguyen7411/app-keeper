@@ -16,7 +16,7 @@ const { Note, Color, Tag, Image, Status, Sequelize } = models
 const imageType = type.object({
   name: 'Image',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     note_id: { type: type.int },
     url: { type: type.string },
     deleted_at: { type: type.string },
@@ -28,7 +28,7 @@ const imageType = type.object({
 const statusType = type.object({
   name: 'Status',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     name: { type: type.string },
     deleted_at: { type: type.string },
     created_at: { type: type.string },
@@ -52,7 +52,7 @@ const noteInputType = type.input({
 export const noteType = type.object({
   name: 'Note',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     title: { type: type.string },
     contents: { type: type.string },
     sort_value: { type: type.int },

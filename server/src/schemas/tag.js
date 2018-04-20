@@ -14,7 +14,7 @@ const { Tag } = models
 export const tagType = type.object({
   name: 'Tag',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     title: { type: type.string },
     deleted_at: { type: type.string },
     created_at: { type: type.string },

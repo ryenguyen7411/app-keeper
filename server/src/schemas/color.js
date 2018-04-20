@@ -14,7 +14,7 @@ const { Color, Sequelize } = models
 export const colorType = type.object({
   name: 'Color',
   fields: {
-    id: { type: type.ID },
+    id: { type: type.INT },
     hex: { type: type.string },
     deleted_at: { type: type.string },
     created_at: { type: type.string },

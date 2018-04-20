@@ -12,3 +12,8 @@ export const XML_STATE_DONE = 4
 
 /** */
 export const STATUS_OK = 200
+
+/** NOTE */
+export const STATUS_PUBLIC = 1
+export const STATUS_ARCHIVED = 2
+export const STATUS_DELETED = 3

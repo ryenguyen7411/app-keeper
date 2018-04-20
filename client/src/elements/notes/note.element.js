@@ -14,6 +14,8 @@ import {
 import { pin } from 'react-icons-kit/iconic'
 import { handPointerO } from 'react-icons-kit/fa'
 
+import { STATUS_ARCHIVED, STATUS_DELETED } from 'config/constants'
+
 function Todo({ todoList, noteId, mode, onChange }) {
   return todoList
     .slice(0, 8)
@@ -248,13 +250,13 @@ class Note extends React.Component {
   archive = e => {
     e.stopPropagation()
 
-    this.props.onUpdate(this.props.note.id, { status_id: 2 })
+    this.props.onUpdate(this.props.note.id, { status_id: STATUS_ARCHIVED })
   }
 
   delete = e => {
     e.stopPropagation()
 
-    this.props.onUpdate(this.props.note.id, { status_id: 3 })
+    this.props.onUpdate(this.props.note.id, { status_id: STATUS_DELETED })
   }
 
   togglePinned = e => {

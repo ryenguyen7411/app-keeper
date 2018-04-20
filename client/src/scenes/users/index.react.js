@@ -12,6 +12,7 @@ import {
   getColors
 } from 'config/graphPayload'
 
+import { STATUS_PUBLIC } from 'config/constants'
 import Note from 'elements/notes/note.element'
 
 const HomeNote = ({
@@ -50,8 +51,12 @@ class Home extends React.Component {
     this.props.noteGraph(getColors())
   }
   render() {
-    const pinnedNote = this.props.notes.filter(note => note.pinned === true)
-    const unPinnedNote = this.props.notes.filter(note => note.pinned !== true)
+    const notes = this.props.notes.filter(
+      note => note.status.id === STATUS_PUBLIC
+    )
+
+    const pinnedNote = notes.filter(note => note.pinned === true)
+    const unPinnedNote = notes.filter(note => note.pinned !== true)
 
     const { colors } = this.props
 
