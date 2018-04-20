@@ -40,8 +40,10 @@ class Home extends React.Component {
     this.props.noteGraph(getNoteTags())
   }
   render() {
+    console.log('TRIGGER RENDER')
     const pinnedNote = this.props.notes.filter(note => note.pinned === true)
     const unPinnedNote = this.props.notes.filter(note => note.pinned !== true)
+
     return [
       <div key="pinned">
         <h6>Được ghim</h6>
