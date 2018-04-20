@@ -73,21 +73,20 @@ class Home extends React.Component {
   componentDidMount() {}
 
   componentWillReceiveProps(props) {
+    const [hash, attr] = props.location.hash.split('/')
+
     /** FILTER NOTE BASE ON CURRENT HASH */
-    if (
-      this.state.isInitialized &&
-      props.location.hash === this.state.currentHash
-    ) {
+    if (this.state.isInitialized && hash === this.state.currentHash) {
       return
     }
 
-    if (!props.notes) return
+    if (!props.notes || !props.noteTags) return
 
     const sourceNotes = props.notes
+    const sourceNoteTags = props.noteTags
     const isInitialized = this.state.isInitialized
 
     const currentHash = this.state.currentHash
-    const hash = props.location.hash
 
     function getNotes() {
       if (hash === CurrentHash.HOME || hash === CurrentHash.NOTES) {
@@ -99,7 +98,12 @@ class Home extends React.Component {
           return sourceNotes.filter(note => note.status.id === STATUS_PUBLIC)
         }
       } else if (hash === CurrentHash.TAGS) {
-        //
+        const hashTag = decodeURI(attr)
+        const noteIds = sourceNoteTags
+          .filter(tag => tag.title === hashTag)
+          .map(tag => tag.note_id)
+
+        return sourceNotes.filter(note => noteIds.indexOf(note.id) >= 0)
       } else if (hash === CurrentHash.ARCHIVED) {
         return sourceNotes.filter(note => note.status.id === STATUS_ARCHIVED)
       } else if (hash === CurrentHash.DELETED) {

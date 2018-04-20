@@ -69,3 +69,36 @@
     background: rgba(0, 0, 0, 0.4);
     z-index: 999;
 }
+
+.modal {
+    &-tags {
+        .tag-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 48px;
+            &-input {
+                all: inherit;
+                flex: 1;
+                &:focus {
+                    border-bottom: 1px solid darken($light, 20%);
+                }
+            }
+            .icon {
+                &-delete,
+                &-edit {
+                    color: $dark;
+                    &:hover {
+                        color: darken($dark, 20%);
+                    }
+                }
+            }
+            svg {
+                width: 4rem;
+            }
+        }
+    }
+    &-dialog {
+        max-width: 320px;
+    }
+}

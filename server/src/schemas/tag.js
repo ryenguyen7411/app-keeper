@@ -8,7 +8,7 @@ import apiValidation from '../services/api'
 /** Import from db and schema */
 import models from '../../db/models'
 
-const { Tag } = models
+const { Tag, NoteTag } = models
 
 /** Definition of model type */
 export const tagType = type.object({
@@ -47,7 +47,7 @@ const resolver = {
     return await Tag.update({ title: args.title }, { where: { id: args.id } })
   },
   deleteTag: async (obj, args, context, selectionSet) => {
-    // TODO: Delete associate NoteTag
+    await NoteTag.destroy({ where: { tag_id: args.id } })
     return await Tag.destroy({ where: { id: args.id } })
   }
 }

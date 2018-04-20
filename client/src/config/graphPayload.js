@@ -114,6 +114,11 @@ export const getTags = () => `
   }
 }
 `
+export const deleteTag = tagId => `
+mutation {
+  deleteTag (id: ${tagId})
+}
+`
 
 /** NOTE TAG - GRAPH QUERY */
 export const getNoteTags = () => `

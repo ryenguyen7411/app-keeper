@@ -8,11 +8,10 @@ import {
   ic_settings,
   ic_highlight
 } from 'react-icons-kit/md'
-import { handPointerO } from 'react-icons-kit/fa'
+import { handPointerO, tag as faTag } from 'react-icons-kit/fa'
+import { ic_add } from 'react-icons-kit/md'
 
-const Sidebar = ({ className, tags }) => {
-  console.log(tags)
-
+const Sidebar = ({ className, tags = [] }) => {
   return (
     <div className={`sidebar ${className}`}>
       <Link className="sidebar-item" to="#notes">
@@ -28,7 +27,28 @@ const Sidebar = ({ className, tags }) => {
 
       <div className="sidebar-item control j-between">
         <span>Nhãn</span>
-        <span className="text-uppercase font-weight-bold">Chỉnh sửa</span>
+        <span
+          className="text-uppercase font-weight-bold"
+          data-toggle="modal"
+          data-target="#tag-modal">
+          Chỉnh sửa
+        </span>
+      </div>
+      {tags.map(tag => (
+        <Link
+          key={`tag-${tag.id}`}
+          className="sidebar-item"
+          to={`#tags/${tag.title}`}>
+          <Icon size={24} icon={faTag} />
+          {tag.title}
+        </Link>
+      ))}
+      <div
+        className="sidebar-item"
+        data-toggle="modal"
+        data-target="#tag-modal">
+        <Icon size={24} icon={ic_add} />
+        Tạo nhãn mới
       </div>
 
       <div className="separator" />
