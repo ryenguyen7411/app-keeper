@@ -18,9 +18,11 @@ import Note from 'elements/notes/note.element'
 
 const HomeNote = ({
   onSelect,
+  onCreate,
   onUpdate,
   onDelete,
   onCreateClone,
+  isEmpty = false,
   note,
   tags,
   colors
@@ -30,9 +32,11 @@ const HomeNote = ({
     <div className="col-sm-6 col-md-4 col-lg-3">
       <Note
         onSelect={onSelect}
+        onCreate={onCreate}
         onUpdate={onUpdate}
         onDelete={onDelete}
         onCreateClone={onCreateClone}
+        isEmpty={isEmpty}
         note={note}
         tags={tags}
         colors={colors}
@@ -64,6 +68,13 @@ class Home extends React.Component {
     const { colors } = this.props
 
     return [
+      // <HomeNote
+      //   key="new"
+      //   onSelect={this.selectNote}
+      //   onCreate={this.createNote}
+      //   isEmpty={true}
+      //   colors={colors}
+      // />,
       <div key="pinned">
         <h6>Được ghim</h6>
         <div className="row gutters-4">
@@ -122,6 +133,8 @@ class Home extends React.Component {
 
     return true
   }
+
+  createNote = (id, updateAttributes) => {}
 
   updateNote = (id, updatedAttributes) => {
     const getNoteQuery = getNote(id)
