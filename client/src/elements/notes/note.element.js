@@ -36,12 +36,18 @@ function TodoItem({ className, todo, mode }) {
   )
 }
 
-function ColorPalette({ colors }) {
+function ColorPalette({ colors, onChangeColor }) {
+  const changeColor = e => {
+    if (e.target.id) {
+      onChangeColor(e.target.id)
+    }
+  }
   return (
-    <div className="row gutters-4 color-palette">
+    <div className="row gutters-4 color-palette" onClick={changeColor}>
       {colors.map(color => (
         <div key={`color-${color.hex}`} className="col-3">
           <div
+            id={color.id}
             className="color-palette-element"
             style={{ backgroundColor: color.hex }}
           />
@@ -67,18 +73,14 @@ class Note extends React.Component {
     return (
       <div
         className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
-        style={{ backgroundColor: note.background }}
+        style={{ backgroundColor: note.color.hex }}
         onMouseEnter={this.hover}
         onMouseLeave={this.unhover}
         onClick={this.select}
         onBlur={this.deselect}
         tabIndex={0}>
         <div className="card-body">
-          <h5>
-            {note.status_id === 2
-              ? 'ARCHIVED'
-              : note.status_id === 3 ? 'DELETED' : ''}
-          </h5>
+          <h5>{note.status.name}</h5>
           <h6 className="card-title">{note.title}</h6>
           <Todo todoList={note.contents} noteId={note.id} mode={note.mode} />
 
@@ -115,7 +117,10 @@ class Note extends React.Component {
                 className="dropdown-menu"
                 aria-labelledby={`toolbox-icon-color-${note.id}`}
                 style={{ width: '160px' }}>
-                <ColorPalette colors={colors} />
+                <ColorPalette
+                  colors={colors}
+                  onChangeColor={this.changeColor}
+                />
               </div>
             </span>
 
@@ -229,8 +234,8 @@ class Note extends React.Component {
     this.props.onUpdate(this.props.note.id, { pinned: !this.props.note.pinned })
   }
 
-  changeColor = e => {
-    e.stopPropagation()
+  changeColor = colorId => {
+    this.props.onUpdate(this.props.note.id, { color_id: colorId })
   }
 
   // tag

@@ -7,9 +7,15 @@ export const getNote = noteId => `
     contents,
     sort_value,
     pinned,
-    color_id,
+    color {
+      id
+      hex
+    },
     mode,
-    status_id,
+    status {
+      id
+      name
+    },
     remind_at,
     created_at,
     updated_at
@@ -24,9 +30,15 @@ export const getNotes = () => `
     contents,
     sort_value,
     pinned,
-    color_id,
+    color {
+      id
+      hex
+    },
     mode,
-    status_id,
+    status {
+      id
+      name
+    },
     remind_at,
     created_at,
     updated_at
