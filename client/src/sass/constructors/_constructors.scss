@@ -1,25 +1,32 @@
 html {
-  //font-size: 62.5%;
+    //font-size: 62.5%;
 }
 
 body {
-  margin: 0;
-  font-family: $font-stack; //font-size: 1.4rem;
-  background: $light;
+    margin: 0;
+    font-family: $font-stack; //font-size: 1.4rem;
+    background: $light;
 }
 
 .row {
-  &.gutters-4 {
-    margin-left: -4px;
-    margin-right: -4px;
-    > .col,
-    > [class*='col-'] {
-      padding-left: 4px;
-      padding-right: 4px;
+    &.gutters-4 {
+        margin-left: -4px;
+        margin-right: -4px;
+        >.col,
+        >[class*='col-'] {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
     }
-  }
 }
 
 .text-strike {
-  text-decoration: line-through;
+    text-decoration: line-through;
+}
+
+textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    resize: none;
 }

@@ -46,7 +46,7 @@ const HomeNote = ({
   colors
 }) => {
   return (
-    <div className="col-sm-6 col-md-4 col-lg-3 my-1">
+    <div className="col-md-6 col-lg-4 col-xl-3 my-1">
       <Note
         onSelect={onSelect}
         onCreate={onCreate}
@@ -62,6 +62,7 @@ const HomeNote = ({
     </div>
   )
 }
+
 class Home extends React.Component {
   constructor(props) {
     super(props)
@@ -79,6 +80,7 @@ class Home extends React.Component {
   }
 
   componentWillReceiveProps(props) {
+    /** FILTER NOTE BASE ON CURRENT HASH */
     if (
       this.state.isInitialized &&
       props.location.hash === this.state.currentHash
@@ -134,13 +136,16 @@ class Home extends React.Component {
     const unPinnedNote = notes.filter(note => note.pinned !== true)
 
     return [
-      // <HomeNote
-      //   key="new"
-      //   onSelect={this.selectNote}
-      //   onCreate={this.createNote}
-      //   isEmpty={true}
-      //   colors={colors}
-      // />,
+      (this.state.currentHash === '' ||
+        this.state.currentHash === CurrentHash.NOTES) && (
+        <HomeNote
+          key="new"
+          onSelect={this.selectNote}
+          onCreate={this.createNote}
+          isEmpty={true}
+          colors={colors}
+        />
+      ),
       !!pinnedNote.length && (
         <div key="pinned">
           <p className="mb-0 mt-2">Được ghim</p>

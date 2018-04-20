@@ -54,7 +54,25 @@ function collectTarget(connect, monitor) {
   }
 }
 
-function Todo({ todoList, noteId, mode, onChange }) {
+function Todo({ todoList, noteId, mode, onChange, isEditable }) {
+  function handleClick(e) {
+    e.stopPropagation()
+
+    console.log('CLICKED')
+  }
+
+  if (isEditable) {
+    const text = todoList.map(todo => todo.todo).join('\n')
+    return (
+      <div
+        onClickCapture={handleClick}
+        style={{ width: '100%', height: '100px', background: 'green' }}>
+        <form>
+          <textarea value={text} onChange={onChange} />
+        </form>
+      </div>
+    )
+  }
   return todoList
     .slice(0, 8)
     .map((todo, index) => (
@@ -132,134 +150,142 @@ class Note extends React.Component {
       connectDragSource,
       connectDropTarget,
       isDragging,
-      isOver,
-      onMove,
       note,
       tags,
-      colors = []
+      colors = [],
+      isEmpty
     } = this.props
 
-    return connectDragSource(
-      connectDropTarget(
-        <div
-          className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
-          style={{
-            backgroundColor: note.color.hex,
-            opacity: isDragging ? 0 : 1
-          }}
-          onMouseEnter={this.hover}
-          onMouseLeave={this.unhover}
-          onClick={this.select}
-          onBlur={this.deselect}
-          tabIndex={0}>
-          <div className="card-body">
-            <h6 className="card-title">{note.title}</h6>
-            <Todo
-              todoList={note.contents}
-              noteId={note.id}
-              mode={note.mode}
-              onChange={this.updateContents}
+    if (isEmpty) {
+      return <div>Input note</div>
+    }
+
+    const NoteElement = (
+      <div
+        className={`card note${this.state.isSelected ? ' fullscreen' : ''}`}
+        style={{
+          backgroundColor: note.color.hex,
+          opacity: isDragging ? 0 : 1
+        }}
+        onMouseEnter={this.hover}
+        onMouseLeave={this.unhover}
+        onClick={this.select}
+        onBlur={this.deselect}
+        tabIndex={0}>
+        <div className="card-body">
+          <h6 className="card-title">{note.title}</h6>
+          <Todo
+            todoList={note.contents}
+            noteId={note.id}
+            mode={note.mode}
+            onChange={this.updateContents}
+            isEditable={this.state.isSelected}
+          />
+
+          <div className="tags">
+            {tags.map(tag => (
+              <span
+                key={`tag-${note.id}-${tag.id}`}
+                className="badge mr-1"
+                style={{ backgroundColor: 'rgba(0,0,0,.1)' }}>
+                {tag.title}
+              </span>
+            ))}
+          </div>
+
+          <div
+            key={`note-${note.id}-toolbox`}
+            className={`toolbox ${
+              this.state.isHovered || this.state.isSelected
+                ? 'visible'
+                : 'invisible'
+            }`}>
+            <Icon icon={handPointerO} size={20} className="toolbox-icon" />
+
+            {/* Icon Color palette */}
+            <span>
+              <Icon
+                icon={ic_color_lens}
+                size={20}
+                id={`toolbox-icon-color-${note.id}`}
+                className="toolbox-icon"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onMouseEnter={this.showColorPalette}
+                onClick={e => e.stopPropagation()}
+              />
+              <div
+                className="dropdown-menu"
+                aria-labelledby={`toolbox-icon-color-${note.id}`}
+                style={{ width: '160px' }}>
+                <ColorPalette
+                  colors={colors}
+                  current={note.color.id}
+                  onChangeColor={this.changeColor}
+                />
+              </div>
+            </span>
+
+            <Icon icon={ic_image} size={20} className="toolbox-icon" />
+            <Icon
+              icon={ic_archive}
+              size={20}
+              className="toolbox-icon"
+              onClick={this.archive}
             />
 
-            <div className="tags">
-              {tags.map(tag => (
-                <span
-                  key={`tag-${note.id}-${tag.id}`}
-                  className="badge mr-1"
-                  style={{ backgroundColor: 'rgba(0,0,0,.1)' }}>
-                  {tag.title}
-                </span>
-              ))}
-            </div>
-
-            <div
-              key={`note-${note.id}-toolbox`}
-              className={`toolbox ${
-                this.state.isHovered ? 'visible' : 'invisible'
-              }`}>
-              <Icon icon={handPointerO} size={20} className="toolbox-icon" />
-
-              {/* Icon Color palette */}
-              <span>
-                <Icon
-                  icon={ic_color_lens}
-                  size={20}
-                  id={`toolbox-icon-color-${note.id}`}
-                  className="toolbox-icon"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  onMouseEnter={this.showColorPalette}
-                  onClick={e => e.stopPropagation()}
-                />
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby={`toolbox-icon-color-${note.id}`}
-                  style={{ width: '160px' }}>
-                  <ColorPalette
-                    colors={colors}
-                    current={note.color.id}
-                    onChangeColor={this.changeColor}
-                  />
-                </div>
-              </span>
-
-              <Icon icon={ic_image} size={20} className="toolbox-icon" />
+            {/* Icon More options */}
+            <span>
               <Icon
-                icon={ic_archive}
+                icon={ic_more_vert}
                 size={20}
+                id={`toolbox-icon-dropdown-${note.id}`}
                 className="toolbox-icon"
-                onClick={this.archive}
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={e => e.stopPropagation()}
               />
-
-              {/* Icon More options */}
-              <span>
-                <Icon
-                  icon={ic_more_vert}
-                  size={20}
-                  id={`toolbox-icon-dropdown-${note.id}`}
-                  className="toolbox-icon"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  onClick={e => e.stopPropagation()}
-                />
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
-                  <div className="dropdown-item" onClick={this.delete}>
-                    Xóa ghi chú
-                  </div>
-                  <div className="dropdown-item">Thay đổi nhãn</div>
-                  <div className="dropdown-item" onClick={this.clone}>
-                    Tạo bản sao
-                  </div>
-                  <div className="dropdown-item" onClick={this.changeMode}>
-                    {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
-                  </div>
+              <div
+                className="dropdown-menu"
+                aria-labelledby={`toolbox-icon-dropdown-${note.id}`}>
+                <div className="dropdown-item" onClick={this.delete}>
+                  Xóa ghi chú
                 </div>
-              </span>
+                <div className="dropdown-item">Thay đổi nhãn</div>
+                <div className="dropdown-item" onClick={this.clone}>
+                  Tạo bản sao
+                </div>
+                <div className="dropdown-item" onClick={this.changeMode}>
+                  {note.mode === 'check' ? 'Ẩn hộp kiểm' : 'Hiện hộp kiểm'}
+                </div>
+              </div>
+            </span>
 
-              {!this.state.isSelected && (
-                <Icon
-                  icon={ic_done}
-                  size={16}
-                  className="toolbox-icon icon-checkbox"
-                />
-              )}
+            {!this.state.isSelected && (
               <Icon
-                icon={pin}
+                icon={ic_done}
                 size={16}
-                className={`toolbox-icon icon-pinned ${
-                  note.pinned === true ? 'visible' : ''
-                }`}
-                onClick={this.togglePinned}
+                className="toolbox-icon icon-checkbox"
               />
-            </div>
+            )}
+            <Icon
+              icon={pin}
+              size={16}
+              className={`toolbox-icon icon-pinned ${
+                note.pinned === true ? 'visible' : ''
+              }`}
+              onClick={this.togglePinned}
+            />
           </div>
         </div>
-      )
+      </div>
     )
+
+    return this.state.isSelected
+      ? NoteElement
+      : connectDragSource(connectDropTarget(NoteElement))
   }
 
   /** MOUSE EVENT - START */
@@ -287,7 +313,9 @@ class Note extends React.Component {
     }))
   }
 
-  deselect = () => {
+  deselect = e => {
+    console.log(e, e.currentTarget)
+
     const canDeselect = this.props.onSelect(undefined)
     if (!canDeselect) return false
 
