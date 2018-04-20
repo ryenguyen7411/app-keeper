@@ -19,6 +19,31 @@ module.exports = {
           hex: '#FF6842',
           created_at: new Date(),
           updated_at: new Date()
+        },
+        {
+          hex: '#F29725',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          hex: '#7755DD',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          hex: '#246484',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          hex: '#2277BB',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          hex: '#775599',
+          created_at: new Date(),
+          updated_at: new Date()
         }
       ],
       {}

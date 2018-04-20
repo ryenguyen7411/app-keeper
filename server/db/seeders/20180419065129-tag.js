@@ -6,12 +6,12 @@ module.exports = {
       'Tags',
       [
         {
-          title: 'ABCD',
+          title: 'Important',
           created_at: new Date(),
           updated_at: new Date()
         },
         {
-          title: 'Hello world',
+          title: 'Around the world',
           created_at: new Date(),
           updated_at: new Date()
         }
