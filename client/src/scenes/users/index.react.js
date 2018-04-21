@@ -103,6 +103,7 @@ class Home extends React.Component {
       } else if (hash === CurrentHash.TAGS) {
         const hashTag = decodeURI(attr)
 
+        console.log(hashTag, sourceNoteTags)
 
         const noteIds = sourceNoteTags
           .filter(noteTag => noteTag.tag.title === hashTag)
