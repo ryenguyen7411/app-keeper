@@ -54,19 +54,19 @@ function collectTarget(connect, monitor) {
   }
 }
 
-function Todo({ todoList, noteId, mode, onChange, isEditable }) {
-  function handleClick(e) {
-    e.stopPropagation()
-  }
-
-  if (isEditable) {
+function Todo({ todoList, noteId, mode, onChange, onKeyDown, isEditable }) {
+  if (isEditable && mode === 'text') {
     const text = todoList.map(todo => todo.todo).join('\n')
     return (
-      <div onClickCapture={handleClick}>
-        <form>
-          <textarea autoFocus value={text} onChange={onChange} />
-        </form>
-      </div>
+      <form>
+        <textarea
+          type="textarea"
+          autoFocus
+          value={text}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+        />
+      </form>
     )
   }
   return todoList
@@ -74,38 +74,42 @@ function Todo({ todoList, noteId, mode, onChange, isEditable }) {
     .map((todo, index) => (
       <TodoItem
         key={`todo-${noteId}-${index}`}
-        className="card-text"
+        className="card-text card-text-item"
         index={index}
         todo={todo}
         mode={mode}
         onChange={onChange}
+        isEditable={isEditable}
       />
     ))
 }
 
-function TodoItem({ className, index, todo, mode, onChange }) {
+function TodoItem({ className, index, todo, mode, onChange, isEditable }) {
   const _className = `${className} ${
     mode === 'check' && todo.isChecked ? 'text-strike' : ''
   }`
-
-  const handleChange = e => {
-    e.stopPropagation()
-
-    const target = e.target
-    onChange(e, index, target.checked)
-  }
 
   return (
     <form>
       <p className={_className}>
         {mode === 'check' && (
           <input
+            id={`checkbox-${index}`}
             type="checkbox"
             checked={todo.isChecked}
-            onChange={handleChange}
+            onChange={onChange}
           />
         )}
-        {todo.todo}
+        {isEditable ? (
+          <input
+            id={`text-${index}`}
+            type="text"
+            value={todo.todo}
+            onChange={onChange}
+          />
+        ) : (
+          todo.todo
+        )}
       </p>
     </form>
   )
@@ -140,8 +144,17 @@ class Note extends React.Component {
     this.state = {
       isHovered: false,
       isSelected: false,
-      isShowColorPalette: false
+      isShowColorPalette: false,
+      contents: [],
+      timer: Date.now()
     }
+  }
+
+  componentDidMount() {
+    this.setState(state => ({
+      ...state,
+      contents: this.props.note.contents
+    }))
   }
 
   render() {
@@ -173,10 +186,11 @@ class Note extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{note.title}</h6>
           <Todo
-            todoList={note.contents}
+            todoList={this.state.contents}
             noteId={note.id}
             mode={note.mode}
             onChange={this.updateContents}
+            onKeyDown={this.addNewTodo}
             isEditable={this.state.isSelected}
           />
 
@@ -385,19 +399,62 @@ class Note extends React.Component {
     })
   }
 
-  updateContents = (e, id, isChecked) => {
+  updateContents = e => {
     e.stopPropagation()
 
-    const targetTodo = _.find(
-      this.props.note.contents,
-      (n, index) => index === id
-    )
-    targetTodo.isChecked = isChecked
+    let timer = this.state.timer
+    let noteContents = this.props.note.contents
 
-    // HOTFIX - USE REPLACE TO MAKE ADAPT QUERY STRING FOR GRAPHQL
-    this.props.onUpdate(this.props.note.id, {
-      contents: JSON.stringify(this.props.note.contents).replace(/"/g, '\\"')
-    })
+    if (e.target.type === 'checkbox') {
+      // MODE CHECKBOX - EDIT CHECKBOX
+      const id = e.target.id.split('-')[1]
+      const isChecked = e.target.isCheck
+
+      const targetTodo = _.find(
+        noteContents,
+        (n, index) => index === parseInt(id)
+      )
+      targetTodo.isChecked = isChecked
+    } else if (e.target.type === 'text') {
+      // MODE CHECKBOX - EDIT TEXT
+      const id = e.target.id.split('-')[1]
+      const value = e.target.value
+
+      const targetTodo = _.find(
+        this.props.note.contents,
+        (n, index) => index === parseInt(id)
+      )
+      targetTodo.todo = value
+    } else if (e.target.type === 'textarea') {
+      // MODE TEXT
+      const todos = e.target.value.split('\n')
+
+      noteContents = noteContents.map((todo, index) => {
+        todo.todo = todos[index]
+        return todo
+      })
+    }
+
+    if (Date.now() >= this.state.timer) {
+      this.props.onUpdate(this.props.note.id, {
+        contents: JSON.stringify(noteContents).replace(/"/g, '\\"')
+      })
+
+      timer += 2000
+    }
+
+    this.setState(state => ({
+      ...state,
+      contents: noteContents,
+      timer: timer
+    }))
+  }
+
+  addNewTodo = e => {
+    if (e.key === 'Enter') {
+      alert('This function is under maintainence... Please do not type Enter')
+      e.preventDefault()
+    }
   }
 
   // remind

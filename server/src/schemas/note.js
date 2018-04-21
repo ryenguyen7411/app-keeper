@@ -126,7 +126,7 @@ const resolver = {
       note.pinned = false
     }
 
-    return await Note.update(note, { where: { id: args.id } })
+    return await Note.update(note, { where: { id: args.id }, paranoid: false })
   },
   deleteNote: async (obj, args, context, selectionSet) => {
     return await Note.destroy({ where: { id: args.id } })

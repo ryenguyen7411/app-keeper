@@ -34,3 +34,21 @@ textarea {
 .c-pointer {
     cursor: pointer;
 }
+
+.card-text {
+    &-item {
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+        input[type="text"] {
+            all: inherit;
+            flex: 1;
+            &:focus {
+                border-bottom: 1px solid darken($light, 20%);
+            }
+        }
+        input[type="checkbox"] {
+            width: 2rem;
+        }
+    }
+}
